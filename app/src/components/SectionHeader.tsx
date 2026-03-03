@@ -59,12 +59,13 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   title: {
+    fontFamily: 'NunitoBold',
     fontSize: 20,
-    fontWeight: '800',
     color: PlayNestColors.text,
     letterSpacing: -0.3,
   },
   subtitle: {
+    fontFamily: 'NunitoBold',
     fontSize: 13,
     color: PlayNestColors.textSecondary,
     marginTop: 2,
@@ -74,8 +75,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   actionText: {
+    fontFamily: 'NunitoBold',
     fontSize: 14,
-    fontWeight: '700',
     color: PlayNestColors.primary,
   },
 });

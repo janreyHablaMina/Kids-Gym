@@ -6,6 +6,7 @@ import {
   ScrollView,
   Pressable,
   Alert,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -49,9 +50,10 @@ export default function ProfileScreen() {
         {/* Parent Info Card */}
         <View style={styles.userCard}>
           <View style={styles.userTop}>
-            <View style={styles.avatarWrap}>
-              <Text style={styles.avatarEmoji}>👨‍👦</Text>
-            </View>
+            <Image 
+              source={{ uri: 'https://api.dicebear.com/7.x/avataaars/png?seed=JanreyPlayNest&backgroundColor=A78BFA' }} 
+              style={styles.avatarImage} 
+            />
             <View style={styles.userInfo}>
               <View style={styles.nameRow}>
                 <Text style={styles.userName}>{user.name}</Text>
@@ -204,17 +206,16 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
   },
   headerSub: {
+    fontFamily: 'NunitoBold',
     fontSize: 10,
-    fontWeight: '800',
     color: PlayNestColors.primary,
     letterSpacing: 1.2,
     marginBottom: 4,
   },
   headerTitle: {
+    fontFamily: 'NunitoBold',
     fontSize: 26,
-    fontWeight: '900',
     color: PlayNestColors.text,
-    letterSpacing: -0.4,
   },
   userCard: {
     backgroundColor: PlayNestColors.card,
@@ -228,17 +229,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  avatarWrap: {
+  avatarImage: {
     width: 62,
     height: 62,
     borderRadius: 31,
-    backgroundColor: PlayNestColors.primaryMuted,
-    alignItems: 'center',
-    justifyContent: 'center',
     marginRight: 16,
-  },
-  avatarEmoji: {
-    fontSize: 32,
+    borderWidth: 2,
+    borderColor: PlayNestColors.primaryMuted,
   },
   userInfo: {
     flex: 1,
@@ -248,8 +245,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   userName: {
+    fontFamily: 'NunitoBold',
     fontSize: 20,
-    fontWeight: '900',
     color: PlayNestColors.text,
     marginRight: 8,
   },
@@ -264,15 +261,16 @@ const styles = StyleSheet.create({
   memberBadgeText: {
     color: '#FFFFFF',
     fontSize: 10,
-    fontWeight: '900',
+    fontFamily: 'NunitoBold',
   },
   userRole: {
+    fontFamily: 'NunitoBold',
     fontSize: 13,
     color: PlayNestColors.textSecondary,
-    fontWeight: '600',
     marginTop: 2,
   },
   userEmail: {
+    fontFamily: 'NunitoBold',
     fontSize: 12,
     color: PlayNestColors.textMuted,
     marginTop: 2,
@@ -292,20 +290,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   statNumber: {
+    fontFamily: 'NunitoBold',
     fontSize: 20,
-    fontWeight: '900',
     color: PlayNestColors.primary,
   },
   statLabel: {
+    fontFamily: 'NunitoBold',
     fontSize: 12,
     color: PlayNestColors.textSecondary,
-    fontWeight: '600',
     marginTop: 2,
   },
   statBorder: {
     width: 1,
     height: 28,
-    backgroundColor: PlayNestColors.border,
+    backgroundColor: PlayNestColors.borderLight,
   },
   section: {
     marginBottom: 24,
@@ -332,8 +330,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   addChildText: {
+    fontFamily: 'NunitoBold',
     fontSize: 14,
-    fontWeight: '800',
     color: PlayNestColors.primary,
   },
   menuCard: {
@@ -364,11 +362,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   menuTitle: {
+    fontFamily: 'NunitoBold',
     fontSize: 15,
-    fontWeight: '800',
     color: PlayNestColors.text,
   },
   menuSubtitle: {
+    fontFamily: 'NunitoBold',
     fontSize: 12,
     color: PlayNestColors.textSecondary,
     marginTop: 2,
@@ -383,18 +382,18 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   brandTitle: {
+    fontFamily: 'NunitoBold',
     fontSize: 18,
-    fontWeight: '900',
     color: PlayNestColors.primary,
-    letterSpacing: -0.2,
   },
   brandTagline: {
+    fontFamily: 'NunitoBold',
     fontSize: 13,
-    fontWeight: '700',
     color: PlayNestColors.textSecondary,
     marginTop: 2,
   },
   versionText: {
+    fontFamily: 'NunitoBold',
     fontSize: 11,
     color: PlayNestColors.textMuted,
     marginTop: 6,

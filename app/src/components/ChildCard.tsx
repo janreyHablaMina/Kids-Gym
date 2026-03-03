@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { StyleSheet, Text, View, Pressable, Animated } from 'react-native';
 import { Child } from '@/types';
-import { PlayNestColors, Shadows } from '@/constants/playNestTheme';
+import { PlayNestColors } from '@/constants/playNestTheme';
 
 interface ChildCardProps {
   child: Child;
@@ -21,7 +21,7 @@ export const ChildCard: React.FC<ChildCardProps> = ({
   const handlePressIn = () => {
     if (!onPress) return;
     Animated.spring(scaleAnim, {
-      toValue: 0.96,
+      toValue: 0.97,
       useNativeDriver: true,
       speed: 35,
       bounciness: 4,
@@ -57,7 +57,7 @@ export const ChildCard: React.FC<ChildCardProps> = ({
             <Text
               style={[
                 styles.chipName,
-                selected && { color: PlayNestColors.primary, fontWeight: '800' },
+                selected && { color: PlayNestColors.primary },
               ]}>
               {child.name}
             </Text>
@@ -81,40 +81,43 @@ export const ChildCard: React.FC<ChildCardProps> = ({
         onPressOut={handlePressOut}
         style={[
           styles.cardContainer,
-          selected && styles.cardSelected,
+          selected && { 
+            borderColor: PlayNestColors.primary, 
+            backgroundColor: PlayNestColors.primaryGhost 
+          },
         ]}>
-        <View style={[styles.avatarCircle, { backgroundColor: child.avatarBg + '30' }]}>
-          <Text style={styles.avatarEmoji}>{child.avatarEmoji}</Text>
-        </View>
-
-        <View style={styles.cardInfo}>
-          <View style={styles.headerRow}>
+        
+        {/* Top Header Section */}
+        <View style={styles.cardHeader}>
+          <View style={[styles.avatarCircle, { backgroundColor: child.favoriteColor + '20' }]}>
+            <Text style={styles.avatarEmoji}>{child.avatarEmoji}</Text>
+          </View>
+          <View style={styles.headerTextWrap}>
             <Text style={styles.childName}>{child.name}</Text>
             <View style={styles.ageBadge}>
-              <Text style={styles.ageBadgeText}>Age {child.age}</Text>
-            </View>
-          </View>
-
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>⭐ Favorite:</Text>
-            <Text style={styles.detailValue} numberOfLines={1}>
-              {child.favoriteActivity}
-            </Text>
-          </View>
-
-          <View style={styles.statsRow}>
-            <View style={styles.statPill}>
-              <Text style={styles.statEmoji}>🏆</Text>
-              <Text style={styles.statText}>
-                <Text style={styles.statBold}>{child.sessionsCompleted}</Text> sessions
-              </Text>
-            </View>
-            <View style={[styles.statPill, { backgroundColor: PlayNestColors.greenMuted }]}>
-              <Text style={styles.statEmoji}>✨</Text>
-              <Text style={[styles.statText, { color: PlayNestColors.green }]}>Active Explorer</Text>
+              <Text style={styles.ageBadgeText}>{child.age} Years Old</Text>
             </View>
           </View>
         </View>
+
+        <View style={styles.cardDivider} />
+
+        {/* Structured Info List */}
+        <View style={styles.infoList}>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoLabel}>Favorite Activity</Text>
+            <Text style={styles.infoValue} numberOfLines={1}>{child.favoriteActivity}</Text>
+          </View>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoLabel}>Sessions Completed</Text>
+            <Text style={styles.infoValue}>{child.sessionsCompleted}</Text>
+          </View>
+          <View style={styles.infoRow}>
+            <Text style={styles.infoLabel}>Status</Text>
+            <Text style={[styles.infoValue, { color: PlayNestColors.green }]}>Active ✨</Text>
+          </View>
+        </View>
+
       </Pressable>
     </Animated.View>
   );
@@ -122,99 +125,79 @@ export const ChildCard: React.FC<ChildCardProps> = ({
 
 const styles = StyleSheet.create({
   cardWrapper: {
-    marginBottom: 12,
+    marginBottom: 16,
   },
   cardContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
     backgroundColor: PlayNestColors.card,
-    borderRadius: 22,
-    padding: 16,
+    borderRadius: 24,
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
+    padding: 20,
   },
-  cardSelected: {
-    borderColor: PlayNestColors.primary,
-    backgroundColor: PlayNestColors.primaryGhost,
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
   },
   avatarCircle: {
-    width: 58,
-    height: 58,
-    borderRadius: 29,
+    width: 54,
+    height: 54,
+    borderRadius: 27,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 14,
+    marginRight: 16,
   },
   avatarEmoji: {
-    fontSize: 30,
+    fontSize: 28,
   },
-  cardInfo: {
+  headerTextWrap: {
     flex: 1,
-  },
-  headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 4,
   },
   childName: {
-    fontSize: 17,
-    fontWeight: '800',
+    fontFamily: 'NunitoBold',
+    fontSize: 22,
     color: PlayNestColors.text,
   },
   ageBadge: {
     backgroundColor: PlayNestColors.primaryMuted,
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 14,
   },
   ageBadgeText: {
+    fontFamily: 'NunitoBold',
     fontSize: 12,
-    fontWeight: '700',
     color: PlayNestColors.primary,
   },
-  detailRow: {
+  cardDivider: {
+    height: 1,
+    backgroundColor: PlayNestColors.borderLight,
+    marginBottom: 16,
+  },
+  infoList: {
+    gap: 12,
+  },
+  infoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    justifyContent: 'space-between',
   },
-  detailLabel: {
-    fontSize: 13,
+  infoLabel: {
+    fontFamily: 'NunitoBold',
+    fontSize: 14,
     color: PlayNestColors.textSecondary,
-    fontWeight: '600',
-    marginRight: 4,
   },
-  detailValue: {
-    fontSize: 13,
-    fontWeight: '700',
+  infoValue: {
+    fontFamily: 'NunitoBold',
+    fontSize: 14,
     color: PlayNestColors.text,
-    flex: 1,
+    maxWidth: '60%',
+    textAlign: 'right',
   },
-  statsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  statPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: PlayNestColors.yellowMuted,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 10,
-  },
-  statEmoji: {
-    fontSize: 12,
-    marginRight: 4,
-  },
-  statText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: PlayNestColors.yellow,
-  },
-  statBold: {
-    fontWeight: '800',
-  },
+  
   // Chip variant
   chipContainer: {
     flexDirection: 'row',
@@ -245,11 +228,12 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   chipName: {
+    fontFamily: 'NunitoBold',
     fontSize: 15,
-    fontWeight: '700',
     color: PlayNestColors.text,
   },
   chipAge: {
+    fontFamily: 'NunitoBold',
     fontSize: 12,
     color: PlayNestColors.textSecondary,
   },
@@ -262,8 +246,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   checkText: {
+    fontFamily: 'NunitoBold',
     color: '#FFFFFF',
     fontSize: 12,
-    fontWeight: '800',
   },
 });
