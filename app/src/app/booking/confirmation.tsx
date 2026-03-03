@@ -163,7 +163,7 @@ export default function BookingConfirmationScreen() {
             </LinearGradient>
           </Pressable>
 
-          <Pressable style={styles.outlineButton} onPress={() => router.replace('/')}>
+          <Pressable style={styles.outlineButton} onPress={() => router.dismissAll()}>
             <Text style={styles.outlineButtonText}>Back to Home</Text>
           </Pressable>
           

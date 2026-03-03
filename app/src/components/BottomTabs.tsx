@@ -45,7 +45,10 @@ export function BottomTabs({ state, descriptors, navigation }: any) {
         })}
       </View>
       <View style={styles.centerButtonWrap}>
-        <Pressable style={styles.centerButton}>
+        <Pressable 
+          style={styles.centerButton}
+          onPress={() => router.push('/booking/act-gymnastics')}
+        >
           <LinearGradient
             colors={['#8B5CF6', '#F472B6']}
             start={{ x: 0, y: 0 }}

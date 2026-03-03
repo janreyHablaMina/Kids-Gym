@@ -13,7 +13,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { usePlayNest } from '@/context/PlayNestContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { PlayNestColors } from '@/constants/playNestTheme';
-import { ArrowLeft, Calendar, ChevronRight } from 'lucide-react-native';
+import { ArrowLeft, Calendar, ChevronRight, Home } from 'lucide-react-native';
 
 const generateDates = () => {
   const dates = [];
@@ -106,7 +106,9 @@ export default function BookingFlowScreen() {
           <ArrowLeft size={24} color="#FFFFFF" />
         </Pressable>
         <Text style={styles.headerTitle}>Book a Session</Text>
-        <View style={{ width: 24 }} />
+        <Pressable onPress={() => router.dismissAll()} hitSlop={10}>
+          <Home size={24} color="#FFFFFF" />
+        </Pressable>
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
