@@ -4,6 +4,7 @@ import { Booking } from '@/types';
 import { PlayNestColors, Shadows } from '@/constants/playNestTheme';
 import { usePlayNest } from '@/context/PlayNestContext';
 import { Calendar } from 'lucide-react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface BookingCardProps {
   booking: Booking;
@@ -67,6 +68,8 @@ export const BookingCard: React.FC<BookingCardProps> = ({
   };
 
   const statusStyle = getStatusColor();
+  const cardColor = booking.color || PlayNestColors.primary;
+  const gradientStart = `${cardColor}20`; // ~12% opacity
 
   return (
     <Animated.View style={[{ transform: [{ scale: scaleAnim }] }, styles.wrapper]}>
@@ -74,9 +77,17 @@ export const BookingCard: React.FC<BookingCardProps> = ({
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        style={styles.container}>
+        style={[styles.container, { borderColor: cardColor }]}>
         
-        <View style={styles.topRow}>
+        <LinearGradient
+          colors={[gradientStart, PlayNestColors.card]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={StyleSheet.absoluteFillObject}
+        />
+        
+        <View style={styles.contentInner}>
+          <View style={styles.topRow}>
           <View style={styles.imageWrap}>
             {imageSource ? (
               <Image source={imageSource} style={styles.activityImage} resizeMode="cover" />
@@ -131,7 +142,7 @@ export const BookingCard: React.FC<BookingCardProps> = ({
             </Pressable>
           )}
         </View>
-
+        </View>
       </Pressable>
     </Animated.View>
   );
@@ -142,11 +153,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   container: {
-    backgroundColor: PlayNestColors.card,
     borderRadius: 24,
-    padding: 16,
     borderWidth: 1,
-    borderColor: PlayNestColors.borderLight,
+    overflow: 'hidden',
+  },
+  contentInner: {
+    padding: 16,
   },
   topRow: {
     flexDirection: 'row',

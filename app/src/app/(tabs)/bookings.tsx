@@ -144,17 +144,16 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
   },
   headerSub: {
-    fontSize: 10,
-    fontWeight: '800',
+    fontFamily: 'NunitoBold',
+    fontSize: 11,
     color: PlayNestColors.primary,
     letterSpacing: 1.2,
     marginBottom: 4,
   },
   headerTitle: {
-    fontSize: 26,
-    fontWeight: '900',
+    fontFamily: 'NunitoBold',
+    fontSize: 28,
     color: PlayNestColors.text,
-    letterSpacing: -0.4,
   },
   tabContainer: {
     flexDirection: 'row',
@@ -178,13 +177,12 @@ const styles = StyleSheet.create({
     backgroundColor: PlayNestColors.primaryDark,
   },
   tabText: {
+    fontFamily: 'NunitoBold',
     fontSize: 14,
-    fontWeight: '700',
     color: PlayNestColors.textSecondary,
   },
   tabTextActive: {
     color: '#FFFFFF',
-    fontWeight: '800',
   },
   badgePill: {
     paddingHorizontal: 7,
@@ -199,8 +197,8 @@ const styles = StyleSheet.create({
     backgroundColor: PlayNestColors.primaryMuted,
   },
   badgePillText: {
+    fontFamily: 'NunitoBold',
     fontSize: 11,
-    fontWeight: '800',
     color: PlayNestColors.primary,
   },
   badgePillTextActive: {
@@ -226,13 +224,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   emptyTitle: {
+    fontFamily: 'NunitoBold',
     fontSize: 20,
-    fontWeight: '800',
     color: PlayNestColors.text,
     marginBottom: 8,
     textAlign: 'center',
   },
   emptySubtitle: {
+    fontFamily: 'NunitoBold',
     fontSize: 14,
     color: PlayNestColors.textSecondary,
     textAlign: 'center',

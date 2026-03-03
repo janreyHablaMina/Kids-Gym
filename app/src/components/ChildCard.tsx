@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { StyleSheet, Text, View, Pressable, Animated } from 'react-native';
 import { Child } from '@/types';
 import { PlayNestColors } from '@/constants/playNestTheme';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface ChildCardProps {
   child: Child;
@@ -83,12 +84,21 @@ export const ChildCard: React.FC<ChildCardProps> = ({
           styles.cardContainer,
           selected && { 
             borderColor: PlayNestColors.primary, 
-            backgroundColor: PlayNestColors.primaryGhost 
           },
+          !selected && {
+            borderColor: child.favoriteColor,
+          }
         ]}>
         
+        <LinearGradient
+          colors={selected ? ['rgba(124, 58, 237, 0.4)', '#0F0F2A'] : [`${child.favoriteColor}25`, '#0B0D2B']}
+          start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+          style={StyleSheet.absoluteFillObject}
+        />
+
         {/* Top Header Section */}
-        <View style={styles.cardHeader}>
+        <View style={styles.contentInner}>
+          <View style={styles.cardHeader}>
           <View style={[styles.avatarCircle, { backgroundColor: child.favoriteColor + '20' }]}>
             <Text style={styles.avatarEmoji}>{child.avatarEmoji}</Text>
           </View>
@@ -117,6 +127,7 @@ export const ChildCard: React.FC<ChildCardProps> = ({
             <Text style={[styles.infoValue, { color: PlayNestColors.green }]}>Active ✨</Text>
           </View>
         </View>
+        </View>
 
       </Pressable>
     </Animated.View>
@@ -128,10 +139,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   cardContainer: {
-    backgroundColor: PlayNestColors.card,
     borderRadius: 24,
     borderWidth: 1,
-    borderColor: PlayNestColors.borderLight,
+    borderColor: 'rgba(255,255,255,0.08)',
+    overflow: 'hidden',
+  },
+  contentInner: {
     padding: 20,
   },
   cardHeader: {
