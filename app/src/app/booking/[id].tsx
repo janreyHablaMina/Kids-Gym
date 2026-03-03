@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,23 +6,39 @@ import {
   ScrollView,
   Pressable,
   Alert,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { usePlayNest } from '@/context/PlayNestContext';
-import { PlayNestColors, Shadows } from '@/constants/playNestTheme';
-import { PlayfulButton } from '@/components/PlayfulButton';
-import { ChildCard } from '@/components/ChildCard';
-import { X } from 'lucide-react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { PlayNestColors } from '@/constants/playNestTheme';
+import { ArrowLeft, Calendar, ChevronRight } from 'lucide-react-native';
 
-const DATES = [
-  { dayName: 'TODAY', dateNum: '12', fullStr: 'Saturday, Sep 12' },
-  { dayName: 'SUN', dateNum: '13', fullStr: 'Sunday, Sep 13' },
-  { dayName: 'MON', dateNum: '14', fullStr: 'Monday, Sep 14' },
-  { dayName: 'TUE', dateNum: '15', fullStr: 'Tuesday, Sep 15' },
-  { dayName: 'WED', dateNum: '16', fullStr: 'Wednesday, Sep 16' },
-  { dayName: 'THU', dateNum: '17', fullStr: 'Thursday, Sep 17' },
-];
+const generateDates = () => {
+  const dates = [];
+  const today = new Date();
+  const currentMonth = today.getMonth();
+  for (let i = 0; i < 35; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    
+    if (d.getMonth() !== currentMonth) {
+      dates.push({
+        dayName: d.toLocaleDateString('en-US', { weekday: 'short' }),
+        dateNum: null,
+        fullStr: null,
+      });
+    } else {
+      dates.push({
+        dayName: d.toLocaleDateString('en-US', { weekday: 'short' }),
+        dateNum: d.getDate().toString(),
+        fullStr: d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }),
+      });
+    }
+  }
+  return dates;
+};
 
 export default function BookingFlowScreen() {
   const router = useRouter();
@@ -31,16 +47,21 @@ export default function BookingFlowScreen() {
 
   const activity = activities.find((a) => a.id === id) || activities[0];
 
-  const [selectedDateIndex, setSelectedDateIndex] = useState(0);
-  const [selectedSessionId, setSelectedSessionId] = useState(activity.sessions[0]?.id || 'sess-1');
-  const [selectedChildId, setSelectedChildId] = useState(children[0]?.id || 'child-emma');
+  const DATES = useMemo(() => generateDates(), []);
+  
+  const [selectedDateIndex, setSelectedDateIndex] = useState(0); // Default to today
+  const [selectedSessionId, setSelectedSessionId] = useState(activity.sessions[1]?.id || 'sess-1');
+  const [selectedChildIndex, setSelectedChildIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const selectedDate = DATES[selectedDateIndex];
   const selectedSession =
     activity.sessions.find((s) => s.id === selectedSessionId) || activity.sessions[0];
-  const selectedChild =
-    children.find((c) => c.id === selectedChildId) || children[0];
+  const selectedChild = children[selectedChildIndex] || children[0];
+
+  const handleCycleChild = () => {
+    setSelectedChildIndex((prev) => (prev + 1) % children.length);
+  };
 
   const handleConfirm = () => {
     if (!selectedChild) {
@@ -78,202 +99,153 @@ export default function BookingFlowScreen() {
 
   return (
     <SafeAreaView edges={['top']} style={styles.safeArea}>
-      {/* Top Modal Bar */}
-      <View style={styles.modalBar}>
-        <View>
-          <Text style={styles.barSub}>BOOK A SESSION</Text>
-          <Text style={styles.barTitle}>Choose Schedule 📅</Text>
-        </View>
-
-        <Pressable onPress={() => router.back()} hitSlop={10} style={styles.closeBtn}>
-          <X size={20} color={PlayNestColors.text} />
+      {/* Header */}
+      <View style={styles.header}>
+        <Pressable onPress={() => router.back()} hitSlop={10} style={styles.backBtn}>
+          <ArrowLeft size={24} color="#FFFFFF" />
         </Pressable>
+        <Text style={styles.headerTitle}>Book a Session</Text>
+        <View style={{ width: 24 }} />
       </View>
 
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}>
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         
-        {/* Activity Summary Capsule */}
-        <View style={styles.activityCapsule}>
-          <View style={[styles.capsuleEmoji, { backgroundColor: activity.badgeBg + '30' }]}>
-            <Text style={styles.capsuleEmojiText}>{activity.emoji}</Text>
+        {/* Step Indicator */}
+        <View style={styles.stepContainer}>
+          <View style={styles.stepLine} />
+          
+          <View style={styles.stepItem}>
+            <View style={[styles.stepCircle, styles.stepCircleActive]}>
+              <Text style={styles.stepTextActive}>1</Text>
+            </View>
+            <Text style={styles.stepLabelActive}>Date</Text>
           </View>
-          <View style={styles.capsuleInfo}>
-            <Text style={styles.capsuleName}>{activity.name}</Text>
-            <Text style={styles.capsuleMeta}>
-              {activity.ageRange} • {activity.duration} • {activity.price}
-            </Text>
+          
+          <View style={styles.stepItem}>
+            <View style={styles.stepCircle}>
+              <Text style={styles.stepText}>2</Text>
+            </View>
+            <Text style={styles.stepLabel}>Session</Text>
+          </View>
+          
+          <View style={styles.stepItem}>
+            <View style={styles.stepCircle}>
+              <Text style={styles.stepText}>3</Text>
+            </View>
+            <Text style={styles.stepLabel}>Child</Text>
+          </View>
+          
+          <View style={styles.stepItem}>
+            <View style={styles.stepCircle}>
+              <Text style={styles.stepText}>4</Text>
+            </View>
+            <Text style={styles.stepLabel}>Confirm</Text>
           </View>
         </View>
 
-        {/* Step 1: Select Date */}
-        <View style={styles.stepSection}>
-          <View style={styles.stepTitleRow}>
-            <View style={styles.stepNumberBadge}>
-              <Text style={styles.stepNumberText}>1</Text>
-            </View>
-            <Text style={styles.stepTitle}>Select Date</Text>
-          </View>
-
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.dateScroll}>
-            {DATES.map((item, idx) => {
-              const isSelected = selectedDateIndex === idx;
-              return (
-                <Pressable
-                  key={idx}
-                  onPress={() => setSelectedDateIndex(idx)}
-                  style={[
-                    styles.dateChip,
-                    isSelected && styles.dateChipSelected,
-                  ]}>
-                  <Text
-                    style={[
-                      styles.dateDayText,
-                      isSelected && styles.dateDayTextSelected,
-                    ]}>
-                    {item.dayName}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.dateNumText,
-                      isSelected && styles.dateNumTextSelected,
-                    ]}>
-                    {item.dateNum}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </ScrollView>
+        {/* Date Selection */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>{new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</Text>
+          <ChevronRight size={20} color="#FFFFFF" />
         </View>
-
-        {/* Step 2: Select Session Time */}
-        <View style={styles.stepSection}>
-          <View style={styles.stepTitleRow}>
-            <View style={styles.stepNumberBadge}>
-              <Text style={styles.stepNumberText}>2</Text>
-            </View>
-            <Text style={styles.stepTitle}>Select Time Slot</Text>
-          </View>
-
-          <View style={styles.sessionsGrid}>
-            {activity.sessions.map((sess) => {
-              const isSelected = selectedSessionId === sess.id;
-              return (
-                <Pressable
-                  key={sess.id}
-                  onPress={() => setSelectedSessionId(sess.id)}
-                  style={[
-                    styles.sessionCard,
-                    isSelected && styles.sessionCardSelected,
-                  ]}>
-                  <View style={styles.sessionHeaderRow}>
-                    <Text
-                      style={[
-                        styles.sessionTime,
-                        isSelected && styles.sessionTimeSelected,
-                      ]}>
-                      {sess.time}
-                    </Text>
-                    <View
-                      style={[
-                        styles.spotsPill,
-                        sess.spotsLeft <= 2 && styles.spotsPillUrgent,
-                        isSelected && { backgroundColor: 'rgba(255, 255, 255, 0.15)' },
-                      ]}>
-                      <Text
-                        style={[
-                          styles.spotsPillText,
-                          sess.spotsLeft <= 2 && styles.spotsPillTextUrgent,
-                          isSelected && { color: '#FFFFFF' },
-                        ]}>
-                        {sess.spotsLeft} spots left
-                      </Text>
-                    </View>
-                  </View>
-
-                  <Text
-                    style={[
-                      styles.sessionCoach,
-                      isSelected && { color: 'rgba(255, 255, 255, 0.8)' },
-                    ]}>
-                    Coach: {sess.coach}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </View>
-        </View>
-
-        {/* Step 3: Select Child */}
-        <View style={styles.stepSection}>
-          <View style={styles.stepTitleRow}>
-            <View style={styles.stepNumberBadge}>
-              <Text style={styles.stepNumberText}>3</Text>
-            </View>
-            <Text style={styles.stepTitle}>Who is attending?</Text>
-          </View>
-
-          <View style={styles.childrenWrap}>
-            {children.map((child) => (
-              <ChildCard
-                key={child.id}
-                child={child}
-                variant="chip"
-                selected={selectedChildId === child.id}
-                onPress={() => setSelectedChildId(child.id)}
-              />
+        
+        <View style={styles.calendarContainer}>
+          {/* Single Header Row for Days */}
+          <View style={styles.calendarHeaderRow}>
+            {DATES.slice(0, 7).map((item, idx) => (
+              <Text key={`header-${idx}`} style={styles.calendarDayTextHeader}>
+                {item.dayName}
+              </Text>
             ))}
           </View>
+
+          {/* 5 Rows of Dates */}
+          {Array.from({ length: 5 }).map((_, rowIdx) => (
+            <View key={rowIdx} style={styles.calendarStrip}>
+              {DATES.slice(rowIdx * 7, rowIdx * 7 + 7).map((item, idx) => {
+                const actualIdx = rowIdx * 7 + idx;
+                
+                if (item.dateNum === null) {
+                  return (
+                    <View key={actualIdx} style={styles.calendarDay}>
+                      <View style={[styles.calendarDateCircle, { backgroundColor: 'transparent' }]} />
+                    </View>
+                  );
+                }
+                
+                const isSelected = selectedDateIndex === actualIdx;
+                return (
+                  <Pressable key={actualIdx} onPress={() => setSelectedDateIndex(actualIdx)} style={styles.calendarDay}>
+                    <View style={[styles.calendarDateCircle, isSelected && styles.calendarDateCircleActive]}>
+                      <Text style={[styles.calendarDateText, isSelected && styles.calendarDateTextActive]}>
+                        {item.dateNum}
+                      </Text>
+                    </View>
+                  </Pressable>
+                );
+              })}
+            </View>
+          ))}
         </View>
 
-        {/* Booking Summary Box */}
-        <View style={styles.summaryBox}>
-          <Text style={styles.summaryTitle}>Booking Summary</Text>
-
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Session</Text>
-            <Text style={styles.summaryValue}>{activity.name}</Text>
-          </View>
-
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>When</Text>
-            <Text style={styles.summaryValue}>
-              {selectedDate.fullStr} • {selectedSession.time}
-            </Text>
-          </View>
-
-          <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Child</Text>
-            <Text style={styles.summaryValue}>
-              {selectedChild ? `${selectedChild.avatarEmoji} ${selectedChild.name}` : '-'}
-            </Text>
-          </View>
-
-          <View style={styles.summaryDivider} />
-
-          <View style={styles.summaryRow}>
-            <Text style={styles.totalLabel}>Total Due</Text>
-            <Text style={styles.totalPrice}>{activity.price}</Text>
-          </View>
+        {/* Available Sessions */}
+        <Text style={styles.sectionTitleSpaced}>Available Sessions</Text>
+        <View style={styles.sessionsList}>
+          {activity.sessions.map((sess) => {
+            const isSelected = selectedSessionId === sess.id;
+            return (
+              <Pressable key={sess.id} onPress={() => setSelectedSessionId(sess.id)}>
+                <LinearGradient
+                  colors={isSelected ? ['rgba(124, 58, 237, 0.2)', 'rgba(124, 58, 237, 0.05)'] : ['#151843', '#151843']}
+                  start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                  style={[styles.sessionCard, isSelected && styles.sessionCardSelected]}
+                >
+                  <View style={styles.sessionCardLeft}>
+                    <Calendar size={18} color={isSelected ? '#F472B6' : '#A9A8D6'} style={{ marginRight: 12 }} />
+                    <Text style={[styles.sessionTime, isSelected && styles.sessionTimeSelected]}>{sess.time}</Text>
+                  </View>
+                  <View style={styles.sessionCardRight}>
+                    <Text style={styles.spotsText}>{sess.spotsLeft} spots left</Text>
+                    {isSelected && <ChevronRight size={18} color="#A9A8D6" style={{ marginLeft: 6 }} />}
+                  </View>
+                </LinearGradient>
+              </Pressable>
+            );
+          })}
         </View>
 
-        <View style={{ height: 100 }} />
+        {/* Select Child */}
+        <Text style={styles.sectionTitleSpaced}>Select Child</Text>
+        <Pressable onPress={handleCycleChild} style={styles.childCard}>
+          <View style={styles.childAvatarWrap}>
+            <View style={styles.childAvatar}>
+               <Text style={styles.childEmoji}>{selectedChild?.avatarEmoji}</Text>
+            </View>
+          </View>
+          <View style={styles.childInfo}>
+            <Text style={styles.childName}>{selectedChild?.name || 'No Child'}</Text>
+            <Text style={styles.childAge}>Age {selectedChild?.age || '?'}</Text>
+          </View>
+          <ChevronRight size={20} color="#FFFFFF" />
+        </Pressable>
+
+        <View style={{ height: 120 }} />
       </ScrollView>
 
-      {/* Bottom Sticky Confirmation CTA */}
+      {/* Bottom CTA */}
       <View style={styles.bottomBar}>
-        <PlayfulButton
-          title={isSubmitting ? 'Confirming Booking...' : 'Confirm & Reserve Spot 🎉'}
-          size="lg"
-          variant="primary"
-          onPress={handleConfirm}
-          loading={isSubmitting}
-          style={{ width: '100%' }}
-        />
+        <Pressable style={styles.ctaButton} onPress={handleConfirm}>
+          <LinearGradient
+            colors={['#8B5CF6', '#7C3AED']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.ctaGradient}
+          >
+            <Text style={styles.ctaText}>
+              {isSubmitting ? 'Confirming...' : 'Next: Confirm Booking'}
+            </Text>
+          </LinearGradient>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
@@ -282,247 +254,256 @@ export default function BookingFlowScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: PlayNestColors.canvas,
+    backgroundColor: '#090B2A',
   },
-  modalBar: {
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingVertical: 14,
-    backgroundColor: PlayNestColors.card,
-    borderBottomWidth: 1,
-    borderBottomColor: PlayNestColors.borderLight,
+    paddingVertical: 16,
   },
-  barSub: {
-    fontSize: 10,
-    fontWeight: '800',
-    color: PlayNestColors.primary,
-    letterSpacing: 1.2,
+  backBtn: {
+    padding: 4,
   },
-  barTitle: {
-    fontSize: 22,
-    fontWeight: '900',
-    color: PlayNestColors.text,
-    letterSpacing: -0.3,
-  },
-  closeBtn: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: PlayNestColors.primaryGhost,
-    alignItems: 'center',
-    justifyContent: 'center',
+  headerTitle: {
+    fontFamily: 'NunitoBold',
+    fontSize: 18,
+    color: '#FFFFFF',
   },
   scrollContent: {
     paddingHorizontal: 20,
-    paddingTop: 16,
+    paddingTop: 10,
   },
-  activityCapsule: {
+  stepContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 36,
+    paddingHorizontal: 10,
+    position: 'relative',
+  },
+  stepLine: {
+    position: 'absolute',
+    top: 18,
+    left: 40,
+    right: 40,
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    zIndex: 0,
+  },
+  stepItem: {
     alignItems: 'center',
-    backgroundColor: PlayNestColors.card,
-    borderRadius: 20,
-    padding: 14,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: PlayNestColors.borderLight,
+    zIndex: 1,
   },
-  capsuleEmoji: {
-    width: 48,
-    height: 48,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  capsuleEmojiText: {
-    fontSize: 26,
-  },
-  capsuleInfo: {
-    flex: 1,
-  },
-  capsuleName: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: PlayNestColors.text,
-  },
-  capsuleMeta: {
-    fontSize: 12,
-    color: PlayNestColors.textSecondary,
-    marginTop: 2,
-    fontWeight: '600',
-  },
-  stepSection: {
-    marginBottom: 24,
-  },
-  stepTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  stepNumberBadge: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: PlayNestColors.primaryDark,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 8,
-  },
-  stepNumberText: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '900',
-  },
-  stepTitle: {
-    fontSize: 17,
-    fontWeight: '800',
-    color: PlayNestColors.text,
-  },
-  dateScroll: {
-    gap: 10,
-  },
-  dateChip: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 66,
-    paddingVertical: 12,
+  stepCircle: {
+    width: 36,
+    height: 36,
     borderRadius: 18,
-    backgroundColor: PlayNestColors.card,
-    borderWidth: 1.5,
-    borderColor: PlayNestColors.borderLight,
+    backgroundColor: '#151843',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
   },
-  dateChipSelected: {
-    backgroundColor: PlayNestColors.primaryDark,
-    borderColor: PlayNestColors.primaryDark,
+  stepCircleActive: {
+    backgroundColor: '#A855F7',
+    shadowColor: '#A855F7',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
+    elevation: 8,
   },
-  dateDayText: {
-    fontSize: 10,
-    fontWeight: '800',
-    color: PlayNestColors.textSecondary,
-    marginBottom: 4,
+  stepText: {
+    fontFamily: 'NunitoBold',
+    fontSize: 14,
+    color: '#A9A8D6',
   },
-  dateDayTextSelected: {
+  stepTextActive: {
+    fontFamily: 'NunitoBold',
+    fontSize: 14,
     color: '#FFFFFF',
   },
-  dateNumText: {
-    fontSize: 18,
-    fontWeight: '900',
-    color: PlayNestColors.text,
+  stepLabel: {
+    fontFamily: 'NunitoBold',
+    fontSize: 12,
+    color: '#A9A8D6',
   },
-  dateNumTextSelected: {
-    color: '#FFFFFF',
+  stepLabelActive: {
+    fontFamily: 'NunitoBold',
+    fontSize: 12,
+    color: '#F472B6',
   },
-  sessionsGrid: {
-    gap: 10,
-  },
-  sessionCard: {
-    backgroundColor: PlayNestColors.card,
-    borderRadius: 18,
-    padding: 14,
-    borderWidth: 1.5,
-    borderColor: PlayNestColors.borderLight,
-  },
-  sessionCardSelected: {
-    backgroundColor: PlayNestColors.primaryDark,
-    borderColor: PlayNestColors.primaryDark,
-  },
-  sessionHeaderRow: {
+  sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontFamily: 'NunitoBold',
+    fontSize: 16,
+    color: '#FFFFFF',
+  },
+  sectionTitleSpaced: {
+    fontFamily: 'NunitoBold',
+    fontSize: 16,
+    color: '#FFFFFF',
+    marginTop: 28,
+    marginBottom: 16,
+  },
+  calendarContainer: {
+    gap: 14,
+  },
+  calendarHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 4,
   },
+  calendarDayTextHeader: {
+    width: 38,
+    textAlign: 'center',
+    fontFamily: 'NunitoBold',
+    fontSize: 12,
+    color: '#A9A8D6',
+  },
+  calendarStrip: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  calendarDay: {
+    alignItems: 'center',
+  },
+  calendarDateCircle: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  calendarDateCircleActive: {
+    backgroundColor: '#8B5CF6',
+    shadowColor: '#8B5CF6',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  calendarDateText: {
+    fontFamily: 'NunitoBold',
+    fontSize: 15,
+    color: '#E2E8F0',
+  },
+  calendarDateTextActive: {
+    color: '#FFFFFF',
+  },
+  sessionsList: {
+    gap: 12,
+  },
+  sessionCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 18,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  sessionCardSelected: {
+    borderColor: '#7C3AED',
+  },
+  sessionCardLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   sessionTime: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: PlayNestColors.text,
+    fontFamily: 'NunitoBold',
+    fontSize: 15,
+    color: '#E2E8F0',
   },
   sessionTimeSelected: {
     color: '#FFFFFF',
   },
-  spotsPill: {
-    backgroundColor: PlayNestColors.greenMuted,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 10,
-  },
-  spotsPillUrgent: {
-    backgroundColor: PlayNestColors.orangeMuted,
-  },
-  spotsPillText: {
-    fontSize: 11,
-    fontWeight: '800',
-    color: PlayNestColors.green,
-  },
-  spotsPillTextUrgent: {
-    color: PlayNestColors.orange,
-  },
-  sessionCoach: {
-    fontSize: 12,
-    color: PlayNestColors.textSecondary,
-    fontWeight: '500',
-  },
-  childrenWrap: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  summaryBox: {
-    backgroundColor: PlayNestColors.card,
-    borderRadius: 20,
-    padding: 18,
-    borderWidth: 1,
-    borderColor: PlayNestColors.borderLight,
-    marginTop: 4,
-  },
-  summaryTitle: {
-    fontSize: 15,
-    fontWeight: '800',
-    color: PlayNestColors.text,
-    marginBottom: 12,
-  },
-  summaryRow: {
+  sessionCardRight: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 8,
   },
-  summaryLabel: {
+  spotsText: {
+    fontFamily: 'NunitoBold',
     fontSize: 13,
-    color: PlayNestColors.textSecondary,
-    fontWeight: '500',
+    color: '#34D399',
   },
-  summaryValue: {
+  childCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#151843',
+    padding: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  childAvatarWrap: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#F472B6',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 16,
+  },
+  childAvatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#4C1D95',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  childEmoji: {
+    fontSize: 22,
+  },
+  childInfo: {
+    flex: 1,
+  },
+  childName: {
+    fontFamily: 'NunitoBold',
+    fontSize: 16,
+    color: '#E2E8F0',
+    marginBottom: 2,
+  },
+  childAge: {
+    fontFamily: 'NunitoBold',
     fontSize: 13,
-    fontWeight: '700',
-    color: PlayNestColors.text,
-  },
-  summaryDivider: {
-    height: 1,
-    backgroundColor: PlayNestColors.borderLight,
-    marginVertical: 10,
-  },
-  totalLabel: {
-    fontSize: 15,
-    fontWeight: '800',
-    color: PlayNestColors.text,
-  },
-  totalPrice: {
-    fontSize: 20,
-    fontWeight: '900',
-    color: PlayNestColors.primary,
+    color: '#A9A8D6',
   },
   bottomBar: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: PlayNestColors.card,
-    borderTopWidth: 1,
-    borderTopColor: PlayNestColors.borderLight,
     paddingHorizontal: 20,
-    paddingTop: 14,
-    paddingBottom: 28,
+    paddingTop: 16,
+    paddingBottom: 32,
+    backgroundColor: '#090B2A',
+  },
+  ctaButton: {
+    width: '100%',
+    height: 56,
+    borderRadius: 28,
+    overflow: 'hidden',
+    shadowColor: '#8B5CF6',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  ctaGradient: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ctaText: {
+    fontFamily: 'NunitoBold',
+    fontSize: 16,
+    color: '#FFFFFF',
   },
 });
