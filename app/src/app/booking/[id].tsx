@@ -84,6 +84,7 @@ export default function BookingFlowScreen() {
         pathname: '/booking/confirmation',
         params: {
           bookingId: newBooking.id,
+          activityId: newBooking.activityId,
           activityName: newBooking.activityName,
           activityEmoji: newBooking.activityEmoji,
           dateStr: newBooking.dateStr,

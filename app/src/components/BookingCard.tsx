@@ -1,7 +1,9 @@
 import React, { useRef } from 'react';
-import { StyleSheet, Text, View, Pressable, Alert, Animated } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Alert, Animated, Image } from 'react-native';
 import { Booking } from '@/types';
 import { PlayNestColors, Shadows } from '@/constants/playNestTheme';
+import { usePlayNest } from '@/context/PlayNestContext';
+import { Calendar } from 'lucide-react-native';
 
 interface BookingCardProps {
   booking: Booking;
@@ -14,6 +16,10 @@ export const BookingCard: React.FC<BookingCardProps> = ({
   onPress,
   onCancel,
 }) => {
+  const { activities } = usePlayNest();
+  const activity = activities.find(a => a.id === booking.activityId);
+  const imageSource = activity?.image;
+  
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const handlePressIn = () => {
@@ -52,11 +58,11 @@ export const BookingCard: React.FC<BookingCardProps> = ({
   const getStatusColor = () => {
     switch (booking.status) {
       case 'confirmed':
-        return { bg: PlayNestColors.greenMuted, text: PlayNestColors.green, label: 'Confirmed' };
+        return { bg: 'rgba(52, 211, 153, 0.15)', text: '#34D399', label: 'Confirmed' };
       case 'completed':
-        return { bg: PlayNestColors.border, text: PlayNestColors.textSecondary, label: 'Completed' };
+        return { bg: 'rgba(255, 255, 255, 0.1)', text: PlayNestColors.textSecondary, label: 'Completed' };
       case 'cancelled':
-        return { bg: PlayNestColors.dangerLight, text: PlayNestColors.danger, label: 'Cancelled' };
+        return { bg: 'rgba(239, 68, 68, 0.15)', text: '#EF4444', label: 'Cancelled' };
     }
   };
 
@@ -70,74 +76,62 @@ export const BookingCard: React.FC<BookingCardProps> = ({
         onPressOut={handlePressOut}
         style={styles.container}>
         
-        {/* Card Header */}
-        <View style={styles.header}>
-          <View style={styles.actTitleWrap}>
-            <View style={[styles.emojiBox, { backgroundColor: PlayNestColors.primaryMuted }]}>
-              <Text style={styles.emojiText}>{booking.activityEmoji}</Text>
-            </View>
-            <View style={styles.titleColumn}>
-              <Text style={styles.activityName}>{booking.activityName}</Text>
-              <Text style={styles.categoryLabel}>{booking.categoryLabel} • {booking.coach}</Text>
-            </View>
+        <View style={styles.topRow}>
+          <View style={styles.imageWrap}>
+            {imageSource ? (
+              <Image source={imageSource} style={styles.activityImage} resizeMode="cover" />
+            ) : (
+              <View style={[styles.activityImage, { backgroundColor: PlayNestColors.primaryMuted, alignItems: 'center', justifyContent: 'center' }]}>
+                <Text style={{ fontSize: 32 }}>{booking.activityEmoji}</Text>
+              </View>
+            )}
           </View>
-          <View style={[styles.statusBadge, { backgroundColor: statusStyle.bg }]}>
-            <Text style={[styles.statusText, { color: statusStyle.text }]}>
-              {statusStyle.label}
-            </Text>
-          </View>
-        </View>
-
-        <View style={styles.divider} />
-
-        {/* Schedule & Child Details */}
-        <View style={styles.detailsRow}>
-          <View style={styles.detailBlock}>
-            <Text style={styles.detailLabel}>DATE & TIME</Text>
-            <Text style={styles.detailValue}>
-              📅 {booking.dateStr} • {booking.time}
-            </Text>
-          </View>
-
-          <View style={styles.detailBlock}>
-            <Text style={styles.detailLabel}>CHILD</Text>
-            <View style={styles.childChip}>
-              <Text style={styles.childEmoji}>{booking.childEmoji}</Text>
-              <Text style={styles.childName}>{booking.childName}</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Action Row */}
-        <View style={styles.actionRow}>
-          <Text style={styles.refText}>Ref: #{booking.bookingRef}</Text>
           
-          <View style={styles.btnGroup}>
-            {booking.status === 'confirmed' && onCancel && (
-              <Pressable
-                onPress={handleCancelPress}
-                hitSlop={8}
-                style={({ pressed }) => [
-                  styles.cancelBtn,
-                  pressed && { opacity: 0.6 },
-                ]}>
-                <Text style={styles.cancelBtnText}>Cancel</Text>
-              </Pressable>
-            )}
+          <View style={styles.infoCol}>
+            <View style={styles.titleRow}>
+              <Text style={styles.activityName} numberOfLines={1}>{booking.activityName}</Text>
+              <View style={[styles.statusBadge, { backgroundColor: statusStyle.bg }]}>
+                <Text style={[styles.statusText, { color: statusStyle.text }]}>
+                  {statusStyle.label}
+                </Text>
+              </View>
+            </View>
 
-            {onPress && (
-              <Pressable
-                onPress={onPress}
-                hitSlop={8}
-                style={({ pressed }) => [
-                  styles.viewBtn,
-                  pressed && { opacity: 0.7 },
-                ]}>
-                <Text style={styles.viewBtnText}>View Details →</Text>
-              </Pressable>
-            )}
+            <View style={styles.detailRow}>
+              <Calendar size={14} color={PlayNestColors.textSecondary} style={{ marginRight: 6 }} />
+              <Text style={styles.detailText}>{booking.dateStr} • {booking.time}</Text>
+            </View>
+
+            <View style={styles.detailRow}>
+              <Text style={styles.childEmoji}>{booking.childEmoji}</Text>
+              <Text style={styles.detailText}>{booking.childName}</Text>
+            </View>
           </View>
         </View>
+
+        <View style={styles.btnGroup}>
+          {onPress && (
+            <Pressable
+              onPress={onPress}
+              style={({ pressed }) => [
+                styles.viewBtn,
+                pressed && { opacity: 0.7 },
+              ]}>
+              <Text style={styles.viewBtnText}>View Details</Text>
+            </Pressable>
+          )}
+          {booking.status === 'confirmed' && onCancel && (
+            <Pressable
+              onPress={handleCancelPress}
+              style={({ pressed }) => [
+                styles.cancelBtn,
+                pressed && { opacity: 0.6 },
+              ]}>
+              <Text style={styles.cancelBtnText}>Cancel</Text>
+            </Pressable>
+          )}
+        </View>
+
       </Pressable>
     </Animated.View>
   );
@@ -145,135 +139,101 @@ export const BookingCard: React.FC<BookingCardProps> = ({
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginBottom: 14,
+    marginBottom: 16,
   },
   container: {
     backgroundColor: PlayNestColors.card,
-    borderRadius: 22,
+    borderRadius: 24,
     padding: 16,
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
   },
-  header: {
+  topRow: {
+    flexDirection: 'row',
+    marginBottom: 16,
+  },
+  imageWrap: {
+    width: 80,
+    height: 80,
+    borderRadius: 16,
+    overflow: 'hidden',
+    marginRight: 16,
+    backgroundColor: PlayNestColors.canvas,
+  },
+  activityImage: {
+    width: '100%',
+    height: '100%',
+  },
+  infoCol: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 12,
+    marginBottom: 8,
   },
-  actTitleWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  activityName: {
+    fontFamily: 'NunitoBold',
+    fontSize: 16,
+    color: PlayNestColors.text,
     flex: 1,
     marginRight: 8,
   },
-  emojiBox: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  emojiText: {
-    fontSize: 22,
-  },
-  titleColumn: {
-    flex: 1,
-  },
-  activityName: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: PlayNestColors.text,
-    letterSpacing: -0.2,
-  },
-  categoryLabel: {
-    fontSize: 12,
-    color: PlayNestColors.textSecondary,
-    marginTop: 2,
-    fontWeight: '500',
-  },
   statusBadge: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 12,
+    borderRadius: 10,
   },
   statusText: {
-    fontSize: 12,
-    fontWeight: '800',
+    fontFamily: 'NunitoBold',
+    fontSize: 10,
   },
-  divider: {
-    height: 1,
-    backgroundColor: PlayNestColors.borderLight,
-    marginBottom: 12,
-  },
-  detailsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 14,
-  },
-  detailBlock: {
-    flex: 1,
-  },
-  detailLabel: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: PlayNestColors.textMuted,
-    marginBottom: 4,
-    letterSpacing: 0.5,
-  },
-  detailValue: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: PlayNestColors.text,
-  },
-  childChip: {
+  detailRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 6,
+  },
+  detailText: {
+    fontFamily: 'NunitoBold',
+    fontSize: 13,
+    color: PlayNestColors.textSecondary,
   },
   childEmoji: {
-    fontSize: 16,
-    marginRight: 6,
-  },
-  childName: {
     fontSize: 14,
-    fontWeight: '700',
-    color: PlayNestColors.text,
-  },
-  actionRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: 4,
-  },
-  refText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: PlayNestColors.textMuted,
+    marginRight: 6,
   },
   btnGroup: {
     flexDirection: 'row',
-    alignItems: 'center',
     gap: 12,
   },
-  cancelBtn: {
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-  },
-  cancelBtnText: {
-    color: PlayNestColors.danger,
-    fontSize: 13,
-    fontWeight: '700',
-  },
   viewBtn: {
-    backgroundColor: PlayNestColors.primaryMuted,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 14,
+    flex: 1,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   viewBtnText: {
-    color: PlayNestColors.primary,
-    fontSize: 13,
-    fontWeight: '800',
+    fontFamily: 'NunitoBold',
+    fontSize: 14,
+    color: PlayNestColors.text,
+  },
+  cancelBtn: {
+    flex: 1,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: 'rgba(239, 68, 68, 0.4)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cancelBtnText: {
+    fontFamily: 'NunitoBold',
+    fontSize: 14,
+    color: PlayNestColors.danger,
   },
 });

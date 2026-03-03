@@ -11,6 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { PlayNestColors } from '@/constants/playNestTheme';
+import { usePlayNest } from '@/context/PlayNestContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
   Check,
@@ -23,6 +24,7 @@ export default function BookingConfirmationScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{
     bookingId?: string;
+    activityId?: string;
     activityName?: string;
     activityEmoji?: string;
     dateStr?: string;
@@ -60,6 +62,10 @@ export default function BookingConfirmationScreen() {
   const bookingRef = params.bookingRef || 'PNK-7842';
   const coach = params.coach || 'Coach Maya';
 
+  const { activities } = usePlayNest();
+  const activity = activities.find(a => a.id === params.activityId);
+  const headerImage = activity?.image || require('../../../assets/images/kid_jumping_illustration.jpg');
+
   return (
     <SafeAreaView edges={['top']} style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
@@ -74,9 +80,9 @@ export default function BookingConfirmationScreen() {
             },
           ]}>
           <Image
-            source={require('../../../assets/images/kid_jumping_illustration.jpg')}
+            source={headerImage}
             style={styles.headerGraphic}
-            resizeMode="contain"
+            resizeMode="cover"
           />
           <View style={styles.successBadgeCircle}>
             <Check size={28} color="#FFFFFF" strokeWidth={3} />

@@ -42,11 +42,11 @@ const PlayNestContext = createContext<PlayNestContextType | undefined>(undefined
 
 export function PlayNestProvider({ children }: { children: React.ReactNode }) {
   const [user] = useState<ParentUser>(INITIAL_USER);
-  const [activities] = useState<Activity[]>(MOCK_ACTIVITIES);
+  const activities = MOCK_ACTIVITIES;
   const [childrenList, setChildrenList] = useState<Child[]>(INITIAL_CHILDREN);
   const [bookings, setBookings] = useState<Booking[]>(INITIAL_BOOKINGS);
   const [favorites, setFavorites] = useState<string[]>(['act-gymnastics', 'act-ninja']);
-  const [promotions] = useState<Promotion[]>(MOCK_PROMOTIONS);
+  const promotions = MOCK_PROMOTIONS;
 
   const toggleFavorite = (activityId: string) => {
     setFavorites((prev) =>
