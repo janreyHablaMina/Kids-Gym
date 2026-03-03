@@ -5,15 +5,18 @@ import {
   View,
   Animated,
   ScrollView,
+  Image,
+  Pressable,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { PlayNestColors, Shadows } from '@/constants/playNestTheme';
-import { PlayfulButton } from '@/components/PlayfulButton';
+import { PlayNestColors } from '@/constants/playNestTheme';
+import { LinearGradient } from 'expo-linear-gradient';
 import {
-  Ticket,
-  Sparkles,
-  Home,
+  Check,
+  Calendar,
+  Clock,
+  User,
 } from 'lucide-react-native';
 
 export default function BookingConfirmationScreen() {
@@ -50,139 +53,117 @@ export default function BookingConfirmationScreen() {
   }, []);
 
   const activityName = params.activityName || 'Kids Gymnastics';
-  const activityEmoji = params.activityEmoji || '🤸‍♀️';
   const childName = params.childName || 'Emma';
-  const childEmoji = params.childEmoji || '👧';
-  const dateStr = params.dateStr || 'Saturday, Sep 12';
+  const childEmoji = params.childEmoji || '👦';
+  const dateStr = params.dateStr || 'Saturday, September 12';
   const time = params.time || '10:30 AM';
   const bookingRef = params.bookingRef || 'PNK-7842';
   const coach = params.coach || 'Coach Maya';
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}>
+    <SafeAreaView edges={['top']} style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         
-        {/* Animated Celebration Icon */}
+        {/* Animated Header Graphic */}
         <Animated.View
           style={[
-            styles.celebrationWrap,
+            styles.headerGraphicWrap,
             {
               opacity: fadeAnim,
-              transform: [
-                {
-                  scale: bounceAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0.3, 1],
-                  }),
-                },
-              ],
+              transform: [{ scale: bounceAnim.interpolate({ inputRange: [0, 1], outputRange: [0.8, 1] }) }],
             },
           ]}>
-          <View style={[styles.celebrationCircle, Shadows.glow(PlayNestColors.primaryDark)]}>
-            <Text style={styles.celebrationEmoji}>🎉</Text>
+          <Image
+            source={require('../../../assets/images/kid_jumping_illustration.jpg')}
+            style={styles.headerGraphic}
+            resizeMode="contain"
+          />
+          <View style={styles.successBadgeCircle}>
+            <Check size={28} color="#FFFFFF" strokeWidth={3} />
           </View>
         </Animated.View>
 
         {/* Title & Subtitle */}
         <Animated.View style={[styles.textWrap, { opacity: fadeAnim }]}>
-          <View style={styles.successBadge}>
-            <Sparkles size={13} color={PlayNestColors.green} style={{ marginRight: 4 }} />
-            <Text style={styles.successBadgeText}>CONFIRMED</Text>
-          </View>
           <Text style={styles.title}>You're All Booked!</Text>
           <Text style={styles.subtitle}>
-            {childName} is ready for an exciting gym adventure!
+            {childName} is ready for an exciting adventure.
           </Text>
         </Animated.View>
 
-        {/* PlayPass Booking Ticket Card */}
+        {/* Glassmorphic Summary Card */}
         <Animated.View
           style={[
-            styles.ticketCard,
+            styles.glassCard,
             {
               opacity: fadeAnim,
-              transform: [
-                {
-                  translateY: bounceAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [50, 0],
-                  }),
-                },
-              ],
+              transform: [{ translateY: bounceAnim.interpolate({ inputRange: [0, 1], outputRange: [30, 0] }) }],
             },
           ]}>
-          <View style={styles.ticketTop}>
-            <View style={styles.ticketEmojiBox}>
-              <Text style={styles.ticketEmoji}>{activityEmoji}</Text>
+          <LinearGradient
+            colors={['rgba(124, 58, 237, 0.15)', 'rgba(124, 58, 237, 0.05)']}
+            style={styles.glassBackground}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          />
+          
+          <View style={styles.glassHeader}>
+            <View style={styles.cardIconBox}>
+               <Calendar size={28} color="#FFFFFF" />
             </View>
-            <View style={styles.ticketTitleInfo}>
-              <Text style={styles.ticketBrand}>PLAYNEST PLAYPASS</Text>
-              <Text style={styles.ticketActivityName}>{activityName}</Text>
-              <Text style={styles.ticketCoach}>With {coach}</Text>
+            <View style={styles.glassHeaderInfo}>
+              <Text style={styles.glassActivityName}>{activityName}</Text>
+              <Text style={styles.glassCoach}>With {coach}</Text>
+            </View>
+          </View>
+          
+          <View style={styles.glassDivider} />
+          
+          <View style={styles.glassGrid}>
+            <View style={styles.glassCol}>
+              <Text style={styles.glassLabel}>DATE</Text>
+              <Text style={styles.glassVal}>{dateStr}</Text>
+            </View>
+            <View style={styles.glassCol}>
+              <Text style={styles.glassLabel}>TIME</Text>
+              <Text style={styles.glassVal}>{time}</Text>
             </View>
           </View>
 
-          {/* Perforated ticket cutouts */}
-          <View style={styles.perforationRow}>
-            <View style={styles.cutoutLeft} />
-            <View style={styles.dashedLine} />
-            <View style={styles.cutoutRight} />
-          </View>
-
-          <View style={styles.ticketBottom}>
-            <View style={styles.gridRow}>
-              <View style={styles.gridCol}>
-                <Text style={styles.ticketLabel}>WHEN</Text>
-                <Text style={styles.ticketVal}>{dateStr}</Text>
-                <Text style={styles.ticketValSub}>{time}</Text>
-              </View>
-
-              <View style={styles.gridCol}>
-                <Text style={styles.ticketLabel}>ATTENDEE</Text>
-                <Text style={styles.ticketVal}>
-                  {childEmoji} {childName}
-                </Text>
-                <Text style={styles.ticketValSub}>Child Session</Text>
-              </View>
+          <View style={[styles.glassGrid, { marginTop: 20 }]}>
+            <View style={styles.glassCol}>
+              <Text style={styles.glassLabel}>CHILD</Text>
+              <Text style={styles.glassVal}>{childEmoji} {childName}</Text>
             </View>
-
-            <View style={styles.ticketRefRow}>
-              <Text style={styles.ticketRefLabel}>BOOKING REFERENCE</Text>
-              <Text style={styles.ticketRefCode}>#{bookingRef}</Text>
+            <View style={styles.glassCol}>
+              <Text style={styles.glassLabel}>BOOKING REF</Text>
+              <Text style={styles.glassValRef}>#{bookingRef}</Text>
             </View>
           </View>
+          
         </Animated.View>
 
-        {/* Instructions Reminder */}
-        <View style={styles.reminderCard}>
-          <Text style={styles.reminderTitle}>Quick Reminder 💡</Text>
-          <Text style={styles.reminderText}>
-            Please arrive 10 minutes prior to session start for quick grip socks check and warmup!
-          </Text>
-        </View>
-
         {/* Action Buttons */}
-        <View style={styles.buttonGroup}>
-          <PlayfulButton
-            title="View My Bookings"
-            size="lg"
-            variant="primary"
-            onPress={() => router.replace('/(tabs)/bookings')}
-            icon={<Ticket size={18} color="#FFFFFF" />}
-            style={{ width: '100%', marginBottom: 12 }}
-          />
+        <Animated.View style={[styles.buttonGroup, { opacity: fadeAnim }]}>
+          
+          <Pressable style={styles.primaryButton} onPress={() => router.replace('/(tabs)/bookings')}>
+            <LinearGradient
+              colors={['#8B5CF6', '#7C3AED']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.btnGradient}
+            >
+              <Text style={styles.primaryButtonText}>View My Booking</Text>
+            </LinearGradient>
+          </Pressable>
 
-          <PlayfulButton
-            title="Back to Home"
-            size="md"
-            variant="ghost"
-            onPress={() => router.replace('/')}
-            icon={<Home size={18} color={PlayNestColors.primary} />}
-            style={{ width: '100%' }}
-          />
-        </View>
+          <Pressable style={styles.outlineButton} onPress={() => router.replace('/')}>
+            <Text style={styles.outlineButtonText}>Back to Home</Text>
+          </Pressable>
+          
+        </Animated.View>
+        
+        <View style={{height: 60}} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -191,208 +172,175 @@ export default function BookingConfirmationScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: PlayNestColors.canvas,
+    backgroundColor: '#090B2A',
   },
   scrollContent: {
     paddingHorizontal: 24,
-    paddingTop: 30,
-    paddingBottom: 40,
+    paddingTop: 10,
     alignItems: 'center',
   },
-  celebrationWrap: {
-    marginBottom: 18,
-  },
-  celebrationCircle: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    backgroundColor: PlayNestColors.primaryMuted,
+  headerGraphicWrap: {
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 3,
-    borderColor: PlayNestColors.primaryDark,
+    marginTop: 20,
+    marginBottom: 40,
+    position: 'relative',
   },
-  celebrationEmoji: {
-    fontSize: 50,
+  headerGraphic: {
+    width: 280,
+    height: 280,
+    borderRadius: 20,
+  },
+  successBadgeCircle: {
+    position: 'absolute',
+    bottom: -20,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#34D399',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 4,
+    borderColor: '#090B2A',
+    shadowColor: '#34D399',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 8,
   },
   textWrap: {
     alignItems: 'center',
-    marginBottom: 24,
-  },
-  successBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: PlayNestColors.greenMuted,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginBottom: 8,
-  },
-  successBadgeText: {
-    color: PlayNestColors.green,
-    fontSize: 11,
-    fontWeight: '900',
-    letterSpacing: 0.8,
+    marginBottom: 32,
+    width: '100%',
   },
   title: {
+    fontFamily: 'NunitoBold',
     fontSize: 28,
-    fontWeight: '900',
-    color: PlayNestColors.text,
-    letterSpacing: -0.4,
-    marginBottom: 6,
+    color: '#FFFFFF',
+    marginBottom: 8,
     textAlign: 'center',
   },
   subtitle: {
+    fontFamily: 'NunitoBold',
     fontSize: 15,
-    color: PlayNestColors.textSecondary,
+    color: '#A9A8D6',
     textAlign: 'center',
-    fontWeight: '500',
   },
-  ticketCard: {
+  glassCard: {
     width: '100%',
-    backgroundColor: PlayNestColors.card,
     borderRadius: 24,
-    overflow: 'hidden',
+    padding: 24,
+    marginBottom: 40,
     borderWidth: 1,
-    borderColor: PlayNestColors.borderLight,
+    borderColor: 'rgba(124, 58, 237, 0.3)',
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  glassBackground: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  glassHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 20,
   },
-  ticketTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 18,
-    backgroundColor: PlayNestColors.cardElevated,
-  },
-  ticketEmojiBox: {
-    width: 54,
-    height: 54,
-    borderRadius: 18,
-    backgroundColor: PlayNestColors.primaryMuted,
+  cardIconBox: {
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    backgroundColor: '#7C3AED',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 14,
+    marginRight: 16,
+    shadowColor: '#7C3AED',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
+    elevation: 8,
   },
-  ticketEmoji: {
-    fontSize: 28,
-  },
-  ticketTitleInfo: {
+  glassHeaderInfo: {
     flex: 1,
+    justifyContent: 'center',
   },
-  ticketBrand: {
-    fontSize: 9,
-    fontWeight: '900',
-    color: PlayNestColors.primary,
-    letterSpacing: 1.2,
-    marginBottom: 2,
-  },
-  ticketActivityName: {
-    fontSize: 18,
-    fontWeight: '900',
-    color: PlayNestColors.text,
-    letterSpacing: -0.2,
-  },
-  ticketCoach: {
-    fontSize: 12,
-    color: PlayNestColors.textSecondary,
-    fontWeight: '600',
-  },
-  perforationRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 24,
-    overflow: 'hidden',
-  },
-  cutoutLeft: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: PlayNestColors.canvas,
-    marginLeft: -10,
-  },
-  dashedLine: {
-    flex: 1,
-    height: 1,
-    borderWidth: 1,
-    borderColor: PlayNestColors.border,
-    borderStyle: 'dashed',
-    marginHorizontal: 8,
-  },
-  cutoutRight: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    backgroundColor: PlayNestColors.canvas,
-    marginRight: -10,
-  },
-  ticketBottom: {
-    padding: 18,
-  },
-  gridRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-  },
-  gridCol: {
-    flex: 1,
-  },
-  ticketLabel: {
-    fontSize: 10,
-    fontWeight: '800',
-    color: PlayNestColors.textMuted,
-    letterSpacing: 0.8,
+  glassActivityName: {
+    fontFamily: 'NunitoBold',
+    fontSize: 20,
+    color: '#FFFFFF',
     marginBottom: 4,
   },
-  ticketVal: {
-    fontSize: 14,
-    fontWeight: '800',
-    color: PlayNestColors.text,
-  },
-  ticketValSub: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: PlayNestColors.primary,
-    marginTop: 2,
-  },
-  ticketRefRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: PlayNestColors.borderLight,
-  },
-  ticketRefLabel: {
-    fontSize: 10,
-    fontWeight: '800',
-    color: PlayNestColors.textMuted,
-    letterSpacing: 0.8,
-  },
-  ticketRefCode: {
-    fontSize: 14,
-    fontWeight: '900',
-    color: PlayNestColors.primary,
-    letterSpacing: 0.5,
-  },
-  reminderCard: {
-    width: '100%',
-    backgroundColor: PlayNestColors.yellowMuted,
-    borderRadius: 16,
-    padding: 14,
-    marginBottom: 24,
-  },
-  reminderTitle: {
+  glassCoach: {
+    fontFamily: 'NunitoBold',
     fontSize: 13,
-    fontWeight: '800',
-    color: PlayNestColors.yellow,
-    marginBottom: 2,
+    color: '#A9A8D6',
   },
-  reminderText: {
-    fontSize: 12,
-    color: PlayNestColors.yellowLight,
-    lineHeight: 18,
-    fontWeight: '500',
+  glassDivider: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    marginBottom: 20,
+  },
+  glassGrid: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  glassCol: {
+    flex: 1,
+  },
+  glassLabel: {
+    fontFamily: 'NunitoBold',
+    fontSize: 11,
+    color: '#A9A8D6',
+    letterSpacing: 1,
+    marginBottom: 6,
+  },
+  glassVal: {
+    fontFamily: 'NunitoBold',
+    fontSize: 15,
+    color: '#FFFFFF',
+  },
+  glassValRef: {
+    fontFamily: 'NunitoBold',
+    fontSize: 15,
+    color: '#F472B6',
   },
   buttonGroup: {
     width: '100%',
+    gap: 16,
+  },
+  primaryButton: {
+    width: '100%',
+    height: 56,
+    borderRadius: 28,
+    overflow: 'hidden',
+    shadowColor: '#8B5CF6',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  btnGradient: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  primaryButtonText: {
+    fontFamily: 'NunitoBold',
+    fontSize: 16,
+    color: '#FFFFFF',
+  },
+  outlineButton: {
+    width: '100%',
+    height: 56,
+    borderRadius: 28,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+  },
+  outlineButtonText: {
+    fontFamily: 'NunitoBold',
+    fontSize: 16,
+    color: '#E2E8F0',
   },
 });
