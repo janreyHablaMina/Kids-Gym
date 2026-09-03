@@ -1,0 +1,13 @@
+{
+  "name": "kids-gym-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "app",
+    "web"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace=web",
+    "dev:app": "npm run start --workspace=app"
+  }
+}
