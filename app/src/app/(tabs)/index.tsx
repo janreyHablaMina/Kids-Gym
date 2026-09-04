@@ -12,6 +12,7 @@ import {
   View,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useNavigation } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import { FredokaOne_400Regular } from '@expo-google-fonts/fredoka-one';
@@ -445,12 +446,19 @@ const HomeScreen = () => {
 };
 
 export default function AppStart() {
+  const navigation = useNavigation();
   const [fontsLoaded] = useFonts({
     FredokaOne: FredokaOne_400Regular,
     LuckiestGuy: LuckiestGuy_400Regular,
     NunitoBold: Nunito_700Bold,
   });
   const [showHome, setShowHome] = useState(false);
+
+  useEffect(() => {
+    navigation.setOptions({
+      tabBarStyle: { display: showHome ? 'flex' : 'none' }
+    });
+  }, [showHome, navigation]);
 
   useEffect(() => {
     if (!fontsLoaded) return;

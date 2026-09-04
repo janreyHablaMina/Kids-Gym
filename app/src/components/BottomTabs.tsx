@@ -7,6 +7,12 @@ import { useRouter } from 'expo-router';
 export function BottomTabs({ state, descriptors, navigation }: any) {
   const router = useRouter();
   const currentRoute = state.routes[state.index].name;
+  const currentRouteKey = state.routes[state.index].key;
+  const options = descriptors[currentRouteKey].options;
+
+  if (options.tabBarStyle?.display === 'none') {
+    return null;
+  }
 
   const tabs = [
     { name: 'index', label: 'Home', icon: Home, route: '/' },
