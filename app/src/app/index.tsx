@@ -17,7 +17,7 @@ import { useFonts } from 'expo-font';
 import { FredokaOne_400Regular } from '@expo-google-fonts/fredoka-one';
 import { LuckiestGuy_400Regular } from '@expo-google-fonts/luckiest-guy';
 import { Nunito_700Bold } from '@expo-google-fonts/nunito';
-import { Bell, ArrowRight, Calendar } from 'lucide-react-native';
+import { Bell, ArrowRight, Calendar, Home, Activity, User, Plus } from 'lucide-react-native';
 
 const { height, width } = Dimensions.get('window');
 const isCompact = height < 720 || width < 370;
@@ -45,10 +45,10 @@ const popularActivities = [
 ];
 
 const tabs = [
-  { name: 'Home', symbol: 'H', active: true },
-  { name: 'Activities', symbol: 'A' },
-  { name: 'Bookings', symbol: 'B' },
-  { name: 'Profile', symbol: 'P' },
+  { name: 'Home', icon: Home, active: true },
+  { name: 'Activities', icon: Activity },
+  { name: 'Bookings', icon: Calendar },
+  { name: 'Profile', icon: User },
 ];
 
 const CurvedBrandText = () => {
@@ -414,15 +414,34 @@ const PromoCard = () => (
 );
 
 const BottomTabs = () => (
-  <View style={styles.bottomTabs}>
-    {tabs.map((tab) => (
-      <View key={tab.name} style={styles.tabItem}>
-        <View style={[styles.tabIcon, tab.active && styles.tabIconActive]}>
-          <Text style={[styles.tabIconText, tab.active && styles.tabIconTextActive]}>{tab.symbol}</Text>
+  <View style={styles.bottomBarWrap}>
+    <View style={styles.bottomTabs}>
+      {tabs.slice(0, 2).map((tab) => (
+        <View key={tab.name} style={styles.tabItem}>
+          <tab.icon color={tab.active ? '#7C3AED' : '#6B6880'} size={22} />
+          <Text style={[styles.tabLabel, tab.active && styles.tabLabelActive]}>{tab.name}</Text>
         </View>
-        <Text style={[styles.tabLabel, tab.active && styles.tabLabelActive]}>{tab.name}</Text>
-      </View>
-    ))}
+      ))}
+      <View style={styles.centerSpace} />
+      {tabs.slice(2, 4).map((tab) => (
+        <View key={tab.name} style={styles.tabItem}>
+          <tab.icon color={tab.active ? '#7C3AED' : '#6B6880'} size={22} />
+          <Text style={[styles.tabLabel, tab.active && styles.tabLabelActive]}>{tab.name}</Text>
+        </View>
+      ))}
+    </View>
+    <View style={styles.centerButtonWrap}>
+      <Pressable style={styles.centerButton}>
+        <LinearGradient
+          colors={['#8B5CF6', '#F472B6']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.centerButtonGradient}
+        >
+          <Plus color="#FFFFFF" size={32} />
+        </LinearGradient>
+      </Pressable>
+    </View>
   </View>
 );
 
@@ -989,50 +1008,76 @@ const styles = StyleSheet.create({
     color: '#2E1065',
     fontSize: 12,
   },
-  bottomTabs: {
+  bottomBarWrap: {
     position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
-    height: 84,
+    height: 94,
+    justifyContent: 'flex-end',
+  },
+  bottomTabs: {
+    height: 74,
     backgroundColor: '#090B2A',
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(124,58,237,0.32)',
+    borderTopColor: 'rgba(124,58,237,0.3)',
+    borderLeftWidth: 1,
+    borderLeftColor: 'rgba(124,58,237,0.15)',
+    borderRightWidth: 1,
+    borderRightColor: 'rgba(124,58,237,0.15)',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
     paddingBottom: 10,
+    shadowColor: '#7C3AED',
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 20,
   },
   tabItem: {
-    width: 78,
+    width: 68,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  tabIcon: {
-    width: 27,
-    height: 27,
-    borderRadius: 9,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 5,
-  },
-  tabIconActive: {
-    backgroundColor: '#EDE9FE',
-  },
-  tabIconText: {
-    fontFamily: 'LuckiestGuy',
-    color: '#6B6880',
-    fontSize: 12,
-  },
-  tabIconTextActive: {
-    color: '#7C3AED',
+    paddingTop: 8,
   },
   tabLabel: {
     fontFamily: 'NunitoBold',
     color: '#6B6880',
-    fontSize: 11,
+    fontSize: 10,
+    marginTop: 4,
   },
   tabLabelActive: {
-    color: '#FFFFFF',
+    color: '#7C3AED',
+  },
+  centerSpace: {
+    width: 60,
+  },
+  centerButtonWrap: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: -4,
+    alignItems: 'center',
+  },
+  centerButton: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: '#0B0D2B',
+    padding: 6,
+    shadowColor: '#F472B6',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    elevation: 10,
+  },
+  centerButtonGradient: {
+    flex: 1,
+    borderRadius: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
