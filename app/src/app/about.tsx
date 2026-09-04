@@ -6,7 +6,6 @@ import {
   ScrollView,
   Pressable,
   Alert,
-  Linking,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -19,8 +18,6 @@ import {
   Clock,
   Phone,
   Mail,
-  ShieldCheck,
-  Coffee,
   Sparkles,
   Navigation,
   CheckCircle2,
@@ -67,7 +64,7 @@ export default function AboutScreen() {
         showsVerticalScrollIndicator={false}>
         
         {/* Brand Banner */}
-        <View style={[styles.brandBanner, Shadows.glow(PlayNestColors.primary)]}>
+        <View style={[styles.brandBanner, Shadows.glow(PlayNestColors.primaryDark)]}>
           <View style={styles.bannerEmojiCircle}>
             <Text style={styles.bannerEmoji}>🏰</Text>
           </View>
@@ -79,7 +76,7 @@ export default function AboutScreen() {
         </View>
 
         {/* Operating Hours */}
-        <View style={[styles.card, Shadows.card]}>
+        <View style={styles.card}>
           <View style={styles.cardHeaderRow}>
             <Clock size={20} color={PlayNestColors.primary} style={{ marginRight: 8 }} />
             <Text style={styles.cardTitle}>Operating Hours</Text>
@@ -97,7 +94,7 @@ export default function AboutScreen() {
         </View>
 
         {/* Simulated Map View */}
-        <View style={[styles.mapCard, Shadows.card]}>
+        <View style={styles.mapCard}>
           <View style={styles.simulatedMapBg}>
             <View style={styles.mapGridPattern} />
             <View style={styles.mapPinPulse}>
@@ -150,7 +147,7 @@ export default function AboutScreen() {
         </View>
 
         {/* Facility Amenities */}
-        <View style={[styles.card, Shadows.soft]}>
+        <View style={styles.card}>
           <View style={styles.cardHeaderRow}>
             <Sparkles size={20} color={PlayNestColors.primary} style={{ marginRight: 8 }} />
             <Text style={styles.cardTitle}>Play Space Amenities</Text>
@@ -196,7 +193,7 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
@@ -212,8 +209,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   brandBanner: {
-    backgroundColor: PlayNestColors.primary,
-    borderRadius: 28,
+    backgroundColor: PlayNestColors.primaryDark,
+    borderRadius: 24,
     padding: 24,
     alignItems: 'center',
     marginBottom: 20,
@@ -222,7 +219,7 @@ const styles = StyleSheet.create({
     width: 68,
     height: 68,
     borderRadius: 34,
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 10,
@@ -245,13 +242,13 @@ const styles = StyleSheet.create({
   },
   brandStory: {
     fontSize: 13,
-    color: 'rgba(255, 255, 255, 0.92)',
+    color: 'rgba(255, 255, 255, 0.8)',
     textAlign: 'center',
     lineHeight: 19,
   },
   card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 24,
+    backgroundColor: PlayNestColors.card,
+    borderRadius: 22,
     padding: 18,
     marginBottom: 16,
     borderWidth: 1,
@@ -289,8 +286,8 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   mapCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 24,
+    backgroundColor: PlayNestColors.card,
+    borderRadius: 22,
     overflow: 'hidden',
     marginBottom: 16,
     borderWidth: 1,
@@ -298,7 +295,7 @@ const styles = StyleSheet.create({
   },
   simulatedMapBg: {
     height: 160,
-    backgroundColor: '#E0F2FE',
+    backgroundColor: '#1a2340',
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
@@ -310,13 +307,13 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     borderWidth: 1,
-    borderColor: 'rgba(2, 132, 199, 0.15)',
+    borderColor: 'rgba(167, 139, 250, 0.1)',
   },
   mapPinPulse: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: 'rgba(124, 58, 237, 0.25)',
+    backgroundColor: 'rgba(124, 58, 237, 0.3)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -324,22 +321,19 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 19,
-    backgroundColor: PlayNestColors.primary,
+    backgroundColor: PlayNestColors.primaryDark,
     alignItems: 'center',
     justifyContent: 'center',
   },
   mapBadge: {
     position: 'absolute',
     bottom: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.cardElevated,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: PlayNestColors.borderLight,
   },
   mapBadgeText: {
     fontSize: 11,
@@ -370,8 +364,8 @@ const styles = StyleSheet.create({
   },
   contactCard: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
+    backgroundColor: PlayNestColors.card,
+    borderRadius: 18,
     padding: 16,
     alignItems: 'center',
     borderWidth: 1,

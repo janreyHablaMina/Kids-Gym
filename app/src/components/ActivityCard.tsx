@@ -70,9 +70,9 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
           onPress={onPress}
           onPressIn={handlePressIn}
           onPressOut={handlePressOut}
-          style={[styles.featuredContainer, Shadows.card]}>
+          style={styles.featuredContainer}>
           
-          {/* Top Banner with playful gradient / color background */}
+          {/* Top Banner with playful color background */}
           <View style={[styles.featuredBanner, { backgroundColor: activity.badgeBg }]}>
             <View style={styles.bannerEmojiCircle}>
               <Text style={styles.featuredEmoji}>{activity.emoji}</Text>
@@ -80,9 +80,9 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
 
             {/* Top badges & Favorite */}
             <View style={styles.bannerHeader}>
-              <View style={[styles.agePill, { backgroundColor: 'rgba(255, 255, 255, 0.9)' }]}>
-                <Users size={12} color={activity.accentColor} style={{ marginRight: 4 }} />
-                <Text style={[styles.agePillText, { color: activity.accentColor }]}>
+              <View style={[styles.agePill, { backgroundColor: 'rgba(0, 0, 0, 0.25)' }]}>
+                <Users size={12} color="#FFFFFF" style={{ marginRight: 4 }} />
+                <Text style={[styles.agePillText, { color: '#FFFFFF' }]}>
                   {activity.ageRange}
                 </Text>
               </View>
@@ -94,7 +94,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
                 <Animated.View style={{ transform: [{ scale: heartScaleAnim }] }}>
                   <Heart
                     size={18}
-                    color={isFavorite ? PlayNestColors.coral : '#64748B'}
+                    color={isFavorite ? PlayNestColors.coral : '#94A3B8'}
                     fill={isFavorite ? PlayNestColors.coral : 'none'}
                   />
                 </Animated.View>
@@ -169,15 +169,15 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        style={[styles.listContainer, Shadows.card]}>
+        style={styles.listContainer}>
         
-        <View style={[styles.listEmojiBox, { backgroundColor: activity.badgeBg }]}>
+        <View style={[styles.listEmojiBox, { backgroundColor: activity.badgeBg + '30' }]}>
           <Text style={styles.listEmoji}>{activity.emoji}</Text>
         </View>
 
         <View style={styles.listContent}>
           <View style={styles.listHeaderRow}>
-            <View style={[styles.listAgePill, { backgroundColor: PlayNestColors.primaryGhost }]}>
+            <View style={[styles.listAgePill, { backgroundColor: PlayNestColors.primaryMuted }]}>
               <Text style={styles.listAgeText}>{activity.ageRange}</Text>
             </View>
             <Text style={styles.listPriceText}>{activity.price}</Text>
@@ -212,7 +212,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
           <Animated.View style={{ transform: [{ scale: heartScaleAnim }] }}>
             <Heart
               size={18}
-              color={isFavorite ? PlayNestColors.coral : '#94A3B8'}
+              color={isFavorite ? PlayNestColors.coral : PlayNestColors.textMuted}
               fill={isFavorite ? PlayNestColors.coral : 'none'}
             />
           </Animated.View>
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     width: 76,
     height: 76,
     borderRadius: 38,
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -277,14 +277,9 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 17,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
   },
   popularBadge: {
     position: 'absolute',
@@ -377,27 +372,27 @@ const styles = StyleSheet.create({
 
   // List Variant
   listWrapper: {
-    marginBottom: 14,
+    marginBottom: 12,
   },
   listContainer: {
     flexDirection: 'row',
     backgroundColor: PlayNestColors.card,
-    borderRadius: 24,
+    borderRadius: 22,
     padding: 14,
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
     alignItems: 'center',
   },
   listEmojiBox: {
-    width: 68,
-    height: 68,
-    borderRadius: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 14,
   },
   listEmoji: {
-    fontSize: 34,
+    fontSize: 30,
   },
   listContent: {
     flex: 1,
@@ -422,7 +417,7 @@ const styles = StyleSheet.create({
   listPriceText: {
     fontSize: 14,
     fontWeight: '800',
-    color: PlayNestColors.text,
+    color: PlayNestColors.primary,
   },
   listTitle: {
     fontSize: 16,

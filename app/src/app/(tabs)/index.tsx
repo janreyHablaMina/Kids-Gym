@@ -60,7 +60,7 @@ export default function HomeScreen() {
         </View>
 
         {/* Hero Card */}
-        <View style={[styles.heroCard, Shadows.glow(PlayNestColors.primary)]}>
+        <View style={[styles.heroCard, Shadows.glow(PlayNestColors.primaryDark)]}>
           <View style={styles.heroDecCircle} />
           <View style={styles.heroContent}>
             <View style={styles.heroBadge}>
@@ -94,7 +94,7 @@ export default function HomeScreen() {
               onActionPress={() => router.push('/(tabs)/bookings')}
             />
 
-            <View style={[styles.upcomingCard, Shadows.card]}>
+            <View style={styles.upcomingCard}>
               <View style={styles.upcomingTop}>
                 <View style={[styles.upcomingEmojiBox, { backgroundColor: nextBooking.color + '20' }]}>
                   <Text style={styles.upcomingEmoji}>{nextBooking.activityEmoji}</Text>
@@ -139,17 +139,17 @@ export default function HomeScreen() {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.categoryScroll}>
             {[
-              { label: 'All', emoji: '🌟', color: PlayNestColors.primary, bg: PlayNestColors.primaryMuted },
-              { label: 'Gymnastics', emoji: '🤸‍♀️', color: PlayNestColors.primary, bg: PlayNestColors.primaryMuted },
-              { label: 'Ninja Kids', emoji: '🥷', color: PlayNestColors.orange, bg: PlayNestColors.orangeMuted },
-              { label: 'Toddlers', emoji: '🧸', color: PlayNestColors.yellow, bg: PlayNestColors.yellowMuted },
-              { label: 'Dance', emoji: '💃', color: PlayNestColors.coral, bg: PlayNestColors.coralMuted },
-              { label: 'Indoor Play', emoji: '🏰', color: PlayNestColors.teal, bg: PlayNestColors.tealMuted },
+              { label: 'All', emoji: '🌟', color: PlayNestColors.primary },
+              { label: 'Gymnastics', emoji: '🤸‍♀️', color: PlayNestColors.primary },
+              { label: 'Ninja Kids', emoji: '🥷', color: PlayNestColors.orange },
+              { label: 'Toddlers', emoji: '🧸', color: PlayNestColors.yellow },
+              { label: 'Dance', emoji: '💃', color: PlayNestColors.coral },
+              { label: 'Indoor Play', emoji: '🏰', color: PlayNestColors.teal },
             ].map((cat, idx) => (
               <Pressable
                 key={idx}
                 onPress={() => router.push('/(tabs)/activities')}
-                style={[styles.categoryCard, { backgroundColor: cat.bg }]}>
+                style={styles.categoryCard}>
                 <Text style={styles.catEmoji}>{cat.emoji}</Text>
                 <Text style={[styles.catLabel, { color: cat.color }]}>{cat.label}</Text>
               </Pressable>
@@ -199,7 +199,7 @@ export default function HomeScreen() {
 
         {/* Facility Info Card */}
         <View style={styles.sectionWrap}>
-          <View style={[styles.locationMiniCard, Shadows.soft]}>
+          <View style={styles.locationMiniCard}>
             <View style={styles.locIconBox}>
               <MapPin size={24} color={PlayNestColors.primary} />
             </View>
@@ -271,8 +271,8 @@ const styles = StyleSheet.create({
 
   // Hero Card
   heroCard: {
-    backgroundColor: PlayNestColors.primary,
-    borderRadius: 30,
+    backgroundColor: PlayNestColors.primaryDark,
+    borderRadius: 28,
     padding: 24,
     position: 'relative',
     overflow: 'hidden',
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     width: 170,
     height: 170,
     borderRadius: 85,
-    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
   },
   heroContent: {
     zIndex: 2,
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   heroBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     alignSelf: 'flex-start',
     paddingHorizontal: 10,
     paddingVertical: 4,
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
   },
   heroSubtitle: {
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: 'rgba(255, 255, 255, 0.8)',
     lineHeight: 20,
     marginBottom: 18,
   },
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
   // Upcoming Card
   upcomingCard: {
     backgroundColor: PlayNestColors.card,
-    borderRadius: 24,
+    borderRadius: 22,
     padding: 16,
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
@@ -341,15 +341,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   upcomingEmojiBox: {
-    width: 56,
-    height: 56,
-    borderRadius: 18,
+    width: 52,
+    height: 52,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 14,
   },
   upcomingEmoji: {
-    fontSize: 28,
+    fontSize: 26,
   },
   upcomingInfo: {
     flex: 1,
@@ -415,8 +415,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 16,
-    borderRadius: 20,
+    borderRadius: 18,
     minWidth: 80,
+    backgroundColor: PlayNestColors.card,
+    borderWidth: 1,
+    borderColor: PlayNestColors.borderLight,
   },
   catEmoji: {
     fontSize: 24,
@@ -437,7 +440,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: PlayNestColors.card,
-    borderRadius: 22,
+    borderRadius: 20,
     padding: 16,
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,

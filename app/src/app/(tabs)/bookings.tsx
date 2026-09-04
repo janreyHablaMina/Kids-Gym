@@ -12,7 +12,7 @@ import { usePlayNest } from '@/context/PlayNestContext';
 import { PlayNestColors } from '@/constants/playNestTheme';
 import { BookingCard } from '@/components/BookingCard';
 import { PlayfulButton } from '@/components/PlayfulButton';
-import { CalendarCheck, Compass, Sparkles } from 'lucide-react-native';
+import { CalendarCheck, Compass } from 'lucide-react-native';
 
 export default function BookingsScreen() {
   const router = useRouter();
@@ -101,7 +101,7 @@ export default function BookingsScreen() {
             </Text>
             <Text style={styles.emptySubtitle}>
               {activeTab === 'upcoming'
-                ? 'Choose a fun gymnastics, ninja, or toddler session to spark joy in your kid’s day!'
+                ? 'Choose a fun gymnastics, ninja, or toddler session to spark joy in your kid\'s day!'
                 : 'Your completed or cancelled bookings will show up here.'}
             </Text>
             {activeTab === 'upcoming' && (
@@ -158,9 +158,9 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     marginHorizontal: 20,
-    borderRadius: 22,
+    borderRadius: 20,
     padding: 4,
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
@@ -172,10 +172,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 10,
-    borderRadius: 18,
+    borderRadius: 16,
   },
   tabButtonActive: {
-    backgroundColor: PlayNestColors.primary,
+    backgroundColor: PlayNestColors.primaryDark,
   },
   tabText: {
     fontSize: 14,
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   badgePillActive: {
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
   },
   badgePillInactive: {
     backgroundColor: PlayNestColors.primaryMuted,

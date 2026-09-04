@@ -11,13 +11,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { PlayNestColors, Shadows } from '@/constants/playNestTheme';
 import { PlayfulButton } from '@/components/PlayfulButton';
 import {
-  CheckCircle,
-  Calendar,
-  Clock,
-  User,
   Ticket,
   Sparkles,
-  ArrowRight,
   Home,
 } from 'lucide-react-native';
 
@@ -85,7 +80,7 @@ export default function BookingConfirmationScreen() {
               ],
             },
           ]}>
-          <View style={[styles.celebrationCircle, Shadows.glow(PlayNestColors.primary)]}>
+          <View style={[styles.celebrationCircle, Shadows.glow(PlayNestColors.primaryDark)]}>
             <Text style={styles.celebrationEmoji}>🎉</Text>
           </View>
         </Animated.View>
@@ -106,7 +101,6 @@ export default function BookingConfirmationScreen() {
         <Animated.View
           style={[
             styles.ticketCard,
-            Shadows.card,
             {
               opacity: fadeAnim,
               transform: [
@@ -215,8 +209,8 @@ const styles = StyleSheet.create({
     backgroundColor: PlayNestColors.primaryMuted,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 4,
-    borderColor: '#FFFFFF',
+    borderWidth: 3,
+    borderColor: PlayNestColors.primaryDark,
   },
   celebrationEmoji: {
     fontSize: 50,
@@ -256,8 +250,8 @@ const styles = StyleSheet.create({
   },
   ticketCard: {
     width: '100%',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 26,
+    backgroundColor: PlayNestColors.card,
+    borderRadius: 24,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
@@ -267,21 +261,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 18,
-    backgroundColor: PlayNestColors.primaryGhost,
+    backgroundColor: PlayNestColors.cardElevated,
   },
   ticketEmojiBox: {
     width: 54,
     height: 54,
     borderRadius: 18,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.primaryMuted,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 14,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
   },
   ticketEmoji: {
     fontSize: 28,
@@ -387,19 +376,19 @@ const styles = StyleSheet.create({
   reminderCard: {
     width: '100%',
     backgroundColor: PlayNestColors.yellowMuted,
-    borderRadius: 18,
+    borderRadius: 16,
     padding: 14,
     marginBottom: 24,
   },
   reminderTitle: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#92400E',
+    color: PlayNestColors.yellow,
     marginBottom: 2,
   },
   reminderText: {
     fontSize: 12,
-    color: '#78350F',
+    color: PlayNestColors.yellowLight,
     lineHeight: 18,
     fontWeight: '500',
   },

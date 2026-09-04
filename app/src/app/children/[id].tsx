@@ -15,10 +15,6 @@ import { BookingCard } from '@/components/BookingCard';
 import { SectionHeader } from '@/components/SectionHeader';
 import {
   ArrowLeft,
-  Award,
-  Sparkles,
-  Calendar,
-  Heart,
   Star,
   Plus,
 } from 'lucide-react-native';
@@ -56,8 +52,8 @@ export default function ChildProfileScreen() {
         showsVerticalScrollIndicator={false}>
         
         {/* Child Avatar & Header Card */}
-        <View style={[styles.headerCard, Shadows.card]}>
-          <View style={[styles.avatarCircle, { backgroundColor: child.avatarBg }]}>
+        <View style={styles.headerCard}>
+          <View style={[styles.avatarCircle, { backgroundColor: child.avatarBg + '30' }]}>
             <Text style={styles.avatarEmoji}>{child.avatarEmoji}</Text>
           </View>
 
@@ -88,7 +84,7 @@ export default function ChildProfileScreen() {
 
           {/* Favorite Activity Banner */}
           <View style={styles.favoriteBar}>
-            <Star size={16} color="#B45309" fill="#F59E0B" style={{ marginRight: 6 }} />
+            <Star size={16} color={PlayNestColors.yellow} fill={PlayNestColors.yellow} style={{ marginRight: 6 }} />
             <Text style={styles.favoriteLabel}>Favorite Activity:</Text>
             <Text style={styles.favoriteName} numberOfLines={1}>
               {child.favoriteActivity}
@@ -105,7 +101,7 @@ export default function ChildProfileScreen() {
           />
           <View style={styles.achievementsGrid}>
             {ACHIEVEMENTS.map((ach) => (
-              <View key={ach.id} style={[styles.achievementCard, Shadows.soft]}>
+              <View key={ach.id} style={styles.achievementCard}>
                 <View style={[styles.achievementEmojiCircle, { backgroundColor: ach.bg }]}>
                   <Text style={styles.achievementEmoji}>{ach.emoji}</Text>
                 </View>
@@ -191,7 +187,7 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
@@ -208,8 +204,8 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   headerCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 28,
+    backgroundColor: PlayNestColors.card,
+    borderRadius: 24,
     padding: 22,
     alignItems: 'center',
     marginBottom: 24,
@@ -245,7 +241,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginVertical: 16,
     paddingVertical: 12,
-    backgroundColor: PlayNestColors.canvas,
+    backgroundColor: PlayNestColors.cardElevated,
     borderRadius: 18,
   },
   statBox: {
@@ -280,13 +276,13 @@ const styles = StyleSheet.create({
   favoriteLabel: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#92400E',
+    color: PlayNestColors.yellow,
     marginRight: 6,
   },
   favoriteName: {
     fontSize: 12,
     fontWeight: '800',
-    color: '#78350F',
+    color: PlayNestColors.yellowLight,
     flex: 1,
   },
   section: {
@@ -299,8 +295,8 @@ const styles = StyleSheet.create({
   },
   achievementCard: {
     width: '48%',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
+    backgroundColor: PlayNestColors.card,
+    borderRadius: 18,
     padding: 14,
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
@@ -328,8 +324,8 @@ const styles = StyleSheet.create({
     lineHeight: 15,
   },
   emptyCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 22,
+    backgroundColor: PlayNestColors.card,
+    borderRadius: 20,
     padding: 24,
     alignItems: 'center',
     justifyContent: 'center',

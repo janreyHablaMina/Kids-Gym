@@ -1,79 +1,79 @@
 export const PlayNestColors = {
-  // Brand Primary (Playful Purple / Violet)
-  primary: '#7C3AED',
-  primaryDark: '#5B21B6',
-  primaryLight: '#8B5CF6',
-  primaryMuted: '#EDE9FE',
-  primaryGhost: '#F5F3FF',
+  // Brand Primary (Playful Violet with neon glow)
+  primary: '#A78BFA',
+  primaryDark: '#7C3AED',
+  primaryLight: '#C4B5FD',
+  primaryMuted: 'rgba(167, 139, 250, 0.15)',
+  primaryGhost: 'rgba(167, 139, 250, 0.08)',
 
-  // Secondary Accents
-  blue: '#0284C7',
-  blueLight: '#38BDF8',
-  blueMuted: '#E0F2FE',
-  
-  yellow: '#F59E0B',
-  yellowLight: '#FBBF24',
-  yellowMuted: '#FEF3C7',
+  // Secondary Accents (vivid neon-ish for dark mode)
+  blue: '#38BDF8',
+  blueLight: '#7DD3FC',
+  blueMuted: 'rgba(56, 189, 248, 0.12)',
 
-  coral: '#F43F5E',
-  coralLight: '#FB7185',
-  coralMuted: '#FFE4E6',
+  yellow: '#FBBF24',
+  yellowLight: '#FDE68A',
+  yellowMuted: 'rgba(251, 191, 36, 0.12)',
 
-  green: '#10B981',
-  greenLight: '#34D399',
-  greenMuted: '#D1FAE5',
+  coral: '#FB7185',
+  coralLight: '#FDA4AF',
+  coralMuted: 'rgba(251, 113, 133, 0.12)',
 
-  orange: '#EA580C',
-  orangeLight: '#FB923C',
-  orangeMuted: '#FFEDD5',
+  green: '#34D399',
+  greenLight: '#6EE7B7',
+  greenMuted: 'rgba(52, 211, 153, 0.12)',
 
-  teal: '#0D9488',
-  tealLight: '#2DD4BF',
-  tealMuted: '#CCFBF1',
+  orange: '#FB923C',
+  orangeLight: '#FDBA74',
+  orangeMuted: 'rgba(251, 146, 60, 0.12)',
 
-  // Neutrals
-  canvas: '#F8FAFC',
-  card: '#FFFFFF',
-  cardElevated: '#FFFFFF',
-  border: '#E2E8F0',
-  borderLight: '#F1F5F9',
-  
+  teal: '#2DD4BF',
+  tealLight: '#5EEAD4',
+  tealMuted: 'rgba(45, 212, 191, 0.12)',
+
+  // Dark Mode Surfaces
+  canvas: '#0F0F1A',
+  card: '#1A1A2E',
+  cardElevated: '#222240',
+  border: 'rgba(255, 255, 255, 0.08)',
+  borderLight: 'rgba(255, 255, 255, 0.06)',
+
   // Text
-  text: '#0F172A',
-  textSecondary: '#475569',
-  textMuted: '#94A3B8',
+  text: '#F1F0F5',
+  textSecondary: '#9B97B0',
+  textMuted: '#6B6880',
   textWhite: '#FFFFFF',
 
   // System
-  success: '#10B981',
-  warning: '#F59E0B',
-  danger: '#EF4444',
-  dangerLight: '#FEE2E2',
+  success: '#34D399',
+  warning: '#FBBF24',
+  danger: '#FB7185',
+  dangerLight: 'rgba(251, 113, 133, 0.15)',
 
-  // Shadows
-  shadowColor: '#1E1B4B',
+  // Shadows / Glow
+  shadowColor: '#A78BFA',
 };
 
 export const Shadows = {
   soft: {
-    shadowColor: PlayNestColors.shadowColor,
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.3,
     shadowRadius: 12,
     elevation: 3,
   },
   card: {
-    shadowColor: PlayNestColors.shadowColor,
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.35,
     shadowRadius: 16,
     elevation: 4,
   },
   glow: (color: string) => ({
     shadowColor: color,
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.25,
-    shadowRadius: 16,
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
     elevation: 6,
   }),
 };

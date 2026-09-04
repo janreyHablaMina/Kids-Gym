@@ -68,7 +68,7 @@ export const BookingCard: React.FC<BookingCardProps> = ({
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        style={[styles.container, Shadows.card]}>
+        style={styles.container}>
         
         {/* Card Header */}
         <View style={styles.header}>
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: PlayNestColors.card,
-    borderRadius: 24,
+    borderRadius: 22,
     padding: 16,
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
@@ -167,21 +167,21 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   emojiBox: {
-    width: 46,
-    height: 46,
-    borderRadius: 16,
+    width: 44,
+    height: 44,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
   },
   emojiText: {
-    fontSize: 24,
+    fontSize: 22,
   },
   titleColumn: {
     flex: 1,
   },
   activityName: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: '800',
     color: PlayNestColors.text,
     letterSpacing: -0.2,

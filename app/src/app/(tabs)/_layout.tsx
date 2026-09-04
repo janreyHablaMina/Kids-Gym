@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Home, Sparkles, CalendarCheck, User } from 'lucide-react-native';
 import { PlayNestColors } from '@/constants/playNestTheme';
 
@@ -10,7 +10,7 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: PlayNestColors.primary,
-        tabBarInactiveTintColor: '#94A3B8',
+        tabBarInactiveTintColor: PlayNestColors.textMuted,
         tabBarStyle: styles.tabBar,
         tabBarLabelStyle: styles.tabBarLabel,
       }}>
@@ -64,20 +64,20 @@ export default function TabLayout() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#141428',
     borderTopWidth: 1,
-    borderTopColor: PlayNestColors.borderLight,
+    borderTopColor: 'rgba(255, 255, 255, 0.06)',
     height: 64,
     paddingBottom: 8,
     paddingTop: 8,
-    shadowColor: '#1E1B4B',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.3,
     shadowRadius: 10,
     elevation: 8,
   },
   tabBarLabel: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '700',
     marginTop: 2,
   },

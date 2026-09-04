@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { usePlayNest } from '@/context/PlayNestContext';
-import { PlayNestColors, Shadows } from '@/constants/playNestTheme';
+import { PlayNestColors } from '@/constants/playNestTheme';
 import { PlayfulButton } from '@/components/PlayfulButton';
 import { X, Check } from 'lucide-react-native';
 
@@ -38,7 +38,7 @@ export default function AddChildModal() {
 
   const handleSave = () => {
     if (!name.trim()) {
-      Alert.alert('Child Name Required', 'Please enter your child’s name.');
+      Alert.alert('Child Name Required', 'Please enter your child\'s name.');
       return;
     }
 
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 14,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     borderBottomWidth: 1,
     borderBottomColor: PlayNestColors.borderLight,
   },
@@ -277,8 +277,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   textInput: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 18,
+    backgroundColor: PlayNestColors.card,
+    borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 15,
@@ -298,15 +298,15 @@ const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: 23,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     borderWidth: 1.5,
     borderColor: PlayNestColors.borderLight,
     alignItems: 'center',
     justifyContent: 'center',
   },
   ageChipSelected: {
-    backgroundColor: PlayNestColors.primary,
-    borderColor: PlayNestColors.primary,
+    backgroundColor: PlayNestColors.primaryDark,
+    borderColor: PlayNestColors.primaryDark,
   },
   ageChipText: {
     fontSize: 16,
@@ -324,16 +324,16 @@ const styles = StyleSheet.create({
   activityChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     paddingVertical: 8,
     paddingHorizontal: 14,
-    borderRadius: 16,
+    borderRadius: 14,
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
   },
   activityChipSelected: {
-    backgroundColor: PlayNestColors.primary,
-    borderColor: PlayNestColors.primary,
+    backgroundColor: PlayNestColors.primaryDark,
+    borderColor: PlayNestColors.primaryDark,
   },
   actEmoji: {
     fontSize: 16,

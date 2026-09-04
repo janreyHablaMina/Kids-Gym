@@ -18,11 +18,8 @@ import {
   Flame,
   Users,
   CheckCircle2,
-  Package,
-  Award,
   Calendar,
   Sparkles,
-  ChevronRight,
 } from 'lucide-react-native';
 
 export default function ActivityDetailsScreen() {
@@ -74,19 +71,19 @@ export default function ActivityDetailsScreen() {
           </View>
 
           <View style={styles.heroPillsRow}>
-            <View style={[styles.pill, { backgroundColor: '#FFFFFF' }]}>
-              <Users size={12} color={activity.accentColor} style={{ marginRight: 4 }} />
-              <Text style={[styles.pillText, { color: activity.accentColor }]}>
+            <View style={[styles.pill, { backgroundColor: 'rgba(0, 0, 0, 0.2)' }]}>
+              <Users size={12} color="#FFFFFF" style={{ marginRight: 4 }} />
+              <Text style={[styles.pillText, { color: '#FFFFFF' }]}>
                 {activity.ageRange}
               </Text>
             </View>
 
-            <View style={[styles.pill, { backgroundColor: '#FFFFFF' }]}>
-              <Clock size={12} color={PlayNestColors.textSecondary} style={{ marginRight: 4 }} />
-              <Text style={styles.pillText}>{activity.duration}</Text>
+            <View style={[styles.pill, { backgroundColor: 'rgba(0, 0, 0, 0.2)' }]}>
+              <Clock size={12} color="#FFFFFF" style={{ marginRight: 4 }} />
+              <Text style={[styles.pillText, { color: '#FFFFFF' }]}>{activity.duration}</Text>
             </View>
 
-            <View style={[styles.pill, { backgroundColor: '#FFFFFF' }]}>
+            <View style={[styles.pill, { backgroundColor: 'rgba(0, 0, 0, 0.2)' }]}>
               <Flame size={12} color={PlayNestColors.orange} style={{ marginRight: 4 }} />
               <Text style={[styles.pillText, { color: PlayNestColors.orange }]}>
                 {activity.energyLevel}
@@ -151,7 +148,7 @@ export default function ActivityDetailsScreen() {
             <Text style={styles.sectionTitle}>Session Coach</Text>
           </View>
           <View style={styles.coachRow}>
-            <View style={[styles.coachAvatar, { backgroundColor: activity.badgeBg }]}>
+            <View style={[styles.coachAvatar, { backgroundColor: activity.badgeBg + '40' }]}>
               <Text style={styles.coachAvatarEmoji}>🌟</Text>
             </View>
             <View style={styles.coachInfo}>
@@ -185,7 +182,7 @@ export default function ActivityDetailsScreen() {
       </ScrollView>
 
       {/* Floating Bottom Booking CTA Bar */}
-      <View style={[styles.bottomBar, Shadows.card]}>
+      <View style={styles.bottomBar}>
         <View style={styles.priceColumn}>
           <Text style={styles.priceLabel}>PRICE PER CHILD</Text>
           <Text style={styles.priceValue}>{activity.price}</Text>
@@ -229,16 +226,11 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
   },
   navTitle: {
     fontSize: 17,
@@ -251,7 +243,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   heroCard: {
-    borderRadius: 30,
+    borderRadius: 28,
     paddingVertical: 32,
     alignItems: 'center',
     justifyContent: 'center',
@@ -264,24 +256,19 @@ const styles = StyleSheet.create({
     width: 220,
     height: 220,
     borderRadius: 110,
-    backgroundColor: 'rgba(255, 255, 255, 0.45)',
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
   },
   emojiContainer: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: '#FFFFFF',
+    width: 96,
+    height: 96,
+    borderRadius: 48,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 4,
     marginBottom: 16,
   },
   heroEmoji: {
-    fontSize: 54,
+    fontSize: 50,
   },
   heroPillsRow: {
     flexDirection: 'row',
@@ -294,16 +281,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderRadius: 14,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
   },
   pillText: {
     fontSize: 12,
     fontWeight: '800',
-    color: PlayNestColors.text,
   },
   titleSection: {
     marginBottom: 20,
@@ -343,8 +324,8 @@ const styles = StyleSheet.create({
     lineHeight: 22,
   },
   sectionCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 24,
+    backgroundColor: PlayNestColors.card,
+    borderRadius: 22,
     padding: 18,
     marginBottom: 16,
     borderWidth: 1,
@@ -456,7 +437,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     borderTopWidth: 1,
     borderTopColor: PlayNestColors.borderLight,
     paddingHorizontal: 20,

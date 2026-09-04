@@ -59,7 +59,7 @@ export const PlayfulButton: React.FC<PlayfulButtonProps> = ({
     if (disabled) return PlayNestColors.border;
     switch (variant) {
       case 'primary':
-        return PlayNestColors.primary;
+        return PlayNestColors.primaryDark;
       case 'secondary':
         return PlayNestColors.blue;
       case 'sun':
@@ -71,7 +71,7 @@ export const PlayfulButton: React.FC<PlayfulButtonProps> = ({
       case 'danger':
         return PlayNestColors.danger;
       default:
-        return PlayNestColors.primary;
+        return PlayNestColors.primaryDark;
     }
   };
 

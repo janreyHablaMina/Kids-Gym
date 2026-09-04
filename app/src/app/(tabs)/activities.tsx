@@ -13,7 +13,7 @@ import { usePlayNest } from '@/context/PlayNestContext';
 import { ActivityCategory } from '@/types';
 import { PlayNestColors } from '@/constants/playNestTheme';
 import { ActivityCard } from '@/components/ActivityCard';
-import { Search, X, Sparkles, Filter } from 'lucide-react-native';
+import { Search, X } from 'lucide-react-native';
 
 const CATEGORIES: { id: ActivityCategory; label: string; emoji: string }[] = [
   { id: 'all', label: 'All Fun', emoji: '🌈' },
@@ -185,11 +185,11 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     marginHorizontal: 20,
     paddingHorizontal: 14,
     height: 48,
-    borderRadius: 24,
+    borderRadius: 22,
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
     marginBottom: 12,
@@ -216,16 +216,16 @@ const styles = StyleSheet.create({
   categoryPill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     paddingVertical: 8,
     paddingHorizontal: 14,
-    borderRadius: 18,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
   },
   categoryPillSelected: {
-    backgroundColor: PlayNestColors.primary,
-    borderColor: PlayNestColors.primary,
+    backgroundColor: PlayNestColors.primaryDark,
+    borderColor: PlayNestColors.primaryDark,
   },
   pillEmoji: {
     fontSize: 16,
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   resetBtn: {
-    backgroundColor: PlayNestColors.primary,
+    backgroundColor: PlayNestColors.primaryDark,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,

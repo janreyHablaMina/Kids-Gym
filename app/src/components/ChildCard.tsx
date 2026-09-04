@@ -50,7 +50,7 @@ export const ChildCard: React.FC<ChildCardProps> = ({
             selected && styles.chipSelected,
             { borderColor: selected ? PlayNestColors.primary : PlayNestColors.border },
           ]}>
-          <View style={[styles.chipAvatar, { backgroundColor: child.avatarBg }]}>
+          <View style={[styles.chipAvatar, { backgroundColor: child.avatarBg + '40' }]}>
             <Text style={styles.chipAvatarText}>{child.avatarEmoji}</Text>
           </View>
           <View style={styles.chipTextWrap}>
@@ -82,9 +82,8 @@ export const ChildCard: React.FC<ChildCardProps> = ({
         style={[
           styles.cardContainer,
           selected && styles.cardSelected,
-          Shadows.card,
         ]}>
-        <View style={[styles.avatarCircle, { backgroundColor: child.avatarBg }]}>
+        <View style={[styles.avatarCircle, { backgroundColor: child.avatarBg + '30' }]}>
           <Text style={styles.avatarEmoji}>{child.avatarEmoji}</Text>
         </View>
 
@@ -129,25 +128,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: PlayNestColors.card,
-    borderRadius: 24,
+    borderRadius: 22,
     padding: 16,
-    borderWidth: 2,
-    borderColor: 'transparent',
+    borderWidth: 1,
+    borderColor: PlayNestColors.borderLight,
   },
   cardSelected: {
     borderColor: PlayNestColors.primary,
     backgroundColor: PlayNestColors.primaryGhost,
   },
   avatarCircle: {
-    width: 62,
-    height: 62,
-    borderRadius: 31,
+    width: 58,
+    height: 58,
+    borderRadius: 29,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 14,
   },
   avatarEmoji: {
-    fontSize: 32,
+    fontSize: 30,
   },
   cardInfo: {
     flex: 1,
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   childName: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: '800',
     color: PlayNestColors.text,
   },
@@ -211,7 +210,7 @@ const styles = StyleSheet.create({
   statText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#92400E',
+    color: PlayNestColors.yellow,
   },
   statBold: {
     fontWeight: '800',

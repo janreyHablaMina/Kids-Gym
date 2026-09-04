@@ -13,15 +13,7 @@ import { usePlayNest } from '@/context/PlayNestContext';
 import { PlayNestColors, Shadows } from '@/constants/playNestTheme';
 import { PlayfulButton } from '@/components/PlayfulButton';
 import { ChildCard } from '@/components/ChildCard';
-import {
-  X,
-  Calendar,
-  Clock,
-  User,
-  CheckCircle2,
-  Sparkles,
-  AlertCircle,
-} from 'lucide-react-native';
+import { X } from 'lucide-react-native';
 
 const DATES = [
   { dayName: 'TODAY', dateNum: '12', fullStr: 'Saturday, Sep 12' },
@@ -103,8 +95,8 @@ export default function BookingFlowScreen() {
         showsVerticalScrollIndicator={false}>
         
         {/* Activity Summary Capsule */}
-        <View style={[styles.activityCapsule, Shadows.soft]}>
-          <View style={[styles.capsuleEmoji, { backgroundColor: activity.badgeBg }]}>
+        <View style={styles.activityCapsule}>
+          <View style={[styles.capsuleEmoji, { backgroundColor: activity.badgeBg + '30' }]}>
             <Text style={styles.capsuleEmojiText}>{activity.emoji}</Text>
           </View>
           <View style={styles.capsuleInfo}>
@@ -190,13 +182,13 @@ export default function BookingFlowScreen() {
                       style={[
                         styles.spotsPill,
                         sess.spotsLeft <= 2 && styles.spotsPillUrgent,
-                        isSelected && { backgroundColor: '#FFFFFF' },
+                        isSelected && { backgroundColor: 'rgba(255, 255, 255, 0.15)' },
                       ]}>
                       <Text
                         style={[
                           styles.spotsPillText,
                           sess.spotsLeft <= 2 && styles.spotsPillTextUrgent,
-                          isSelected && { color: PlayNestColors.primary },
+                          isSelected && { color: '#FFFFFF' },
                         ]}>
                         {sess.spotsLeft} spots left
                       </Text>
@@ -206,7 +198,7 @@ export default function BookingFlowScreen() {
                   <Text
                     style={[
                       styles.sessionCoach,
-                      isSelected && { color: 'rgba(255, 255, 255, 0.9)' },
+                      isSelected && { color: 'rgba(255, 255, 255, 0.8)' },
                     ]}>
                     Coach: {sess.coach}
                   </Text>
@@ -239,7 +231,7 @@ export default function BookingFlowScreen() {
         </View>
 
         {/* Booking Summary Box */}
-        <View style={[styles.summaryBox, Shadows.soft]}>
+        <View style={styles.summaryBox}>
           <Text style={styles.summaryTitle}>Booking Summary</Text>
 
           <View style={styles.summaryRow}>
@@ -273,7 +265,7 @@ export default function BookingFlowScreen() {
       </ScrollView>
 
       {/* Bottom Sticky Confirmation CTA */}
-      <View style={[styles.bottomBar, Shadows.card]}>
+      <View style={styles.bottomBar}>
         <PlayfulButton
           title={isSubmitting ? 'Confirming Booking...' : 'Confirm & Reserve Spot 🎉'}
           size="lg"
@@ -298,7 +290,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingVertical: 14,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     borderBottomWidth: 1,
     borderBottomColor: PlayNestColors.borderLight,
   },
@@ -329,8 +321,8 @@ const styles = StyleSheet.create({
   activityCapsule: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 22,
+    backgroundColor: PlayNestColors.card,
+    borderRadius: 20,
     padding: 14,
     marginBottom: 20,
     borderWidth: 1,
@@ -373,7 +365,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: PlayNestColors.primary,
+    backgroundColor: PlayNestColors.primaryDark,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 8,
@@ -397,13 +389,13 @@ const styles = StyleSheet.create({
     width: 66,
     paddingVertical: 12,
     borderRadius: 18,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     borderWidth: 1.5,
     borderColor: PlayNestColors.borderLight,
   },
   dateChipSelected: {
-    backgroundColor: PlayNestColors.primary,
-    borderColor: PlayNestColors.primary,
+    backgroundColor: PlayNestColors.primaryDark,
+    borderColor: PlayNestColors.primaryDark,
   },
   dateDayText: {
     fontSize: 10,
@@ -426,15 +418,15 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   sessionCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
+    backgroundColor: PlayNestColors.card,
+    borderRadius: 18,
     padding: 14,
     borderWidth: 1.5,
     borderColor: PlayNestColors.borderLight,
   },
   sessionCardSelected: {
-    backgroundColor: PlayNestColors.primary,
-    borderColor: PlayNestColors.primary,
+    backgroundColor: PlayNestColors.primaryDark,
+    borderColor: PlayNestColors.primaryDark,
   },
   sessionHeaderRow: {
     flexDirection: 'row',
@@ -477,8 +469,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   summaryBox: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 22,
+    backgroundColor: PlayNestColors.card,
+    borderRadius: 20,
     padding: 18,
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
@@ -526,7 +518,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     borderTopWidth: 1,
     borderTopColor: PlayNestColors.borderLight,
     paddingHorizontal: 20,

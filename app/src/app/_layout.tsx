@@ -19,11 +19,11 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <PlayNestProvider>
-        <StatusBar style="dark" />
+        <StatusBar style="light" />
         <Stack
           screenOptions={{
             headerShown: false,
-            contentStyle: { backgroundColor: '#F8FAFC' },
+            contentStyle: { backgroundColor: '#0F0F1A' },
             animation: 'slide_from_right',
           }}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

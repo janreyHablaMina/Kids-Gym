@@ -10,19 +10,15 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { usePlayNest } from '@/context/PlayNestContext';
-import { PlayNestColors, Shadows } from '@/constants/playNestTheme';
+import { PlayNestColors } from '@/constants/playNestTheme';
 import { ChildCard } from '@/components/ChildCard';
 import { SectionHeader } from '@/components/SectionHeader';
 import {
-  User,
   Plus,
   ShieldCheck,
   MapPin,
-  Clock,
   Phone,
   ChevronRight,
-  Heart,
-  Award,
   Sparkles,
 } from 'lucide-react-native';
 
@@ -51,7 +47,7 @@ export default function ProfileScreen() {
         </View>
 
         {/* Parent Info Card */}
-        <View style={[styles.userCard, Shadows.card]}>
+        <View style={styles.userCard}>
           <View style={styles.userTop}>
             <View style={styles.avatarWrap}>
               <Text style={styles.avatarEmoji}>👨‍👦</Text>
@@ -129,7 +125,7 @@ export default function ProfileScreen() {
         <View style={styles.section}>
           <SectionHeader title="Play Space & Info" emoji="🏢" />
 
-          <View style={[styles.menuCard, Shadows.soft]}>
+          <View style={styles.menuCard}>
             <Pressable
               onPress={() => router.push('/about')}
               style={({ pressed }) => [styles.menuItem, pressed && styles.menuItemPressed]}>
@@ -222,7 +218,7 @@ const styles = StyleSheet.create({
   },
   userCard: {
     backgroundColor: PlayNestColors.card,
-    borderRadius: 28,
+    borderRadius: 24,
     padding: 20,
     marginBottom: 24,
     borderWidth: 1,
@@ -233,16 +229,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatarWrap: {
-    width: 66,
-    height: 66,
-    borderRadius: 33,
+    width: 62,
+    height: 62,
+    borderRadius: 31,
     backgroundColor: PlayNestColors.primaryMuted,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 16,
   },
   avatarEmoji: {
-    fontSize: 34,
+    fontSize: 32,
   },
   userInfo: {
     flex: 1,
@@ -260,7 +256,7 @@ const styles = StyleSheet.create({
   memberBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: PlayNestColors.primary,
+    backgroundColor: PlayNestColors.primaryDark,
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 10,
@@ -320,9 +316,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: PlayNestColors.primaryGhost,
     borderWidth: 2,
-    borderColor: PlayNestColors.primaryLight,
+    borderColor: PlayNestColors.primaryDark,
     borderStyle: 'dashed',
-    borderRadius: 22,
+    borderRadius: 20,
     paddingVertical: 14,
     marginTop: 6,
   },
@@ -330,7 +326,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: PlayNestColors.card,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
@@ -342,7 +338,7 @@ const styles = StyleSheet.create({
   },
   menuCard: {
     backgroundColor: PlayNestColors.card,
-    borderRadius: 24,
+    borderRadius: 22,
     paddingVertical: 6,
     borderWidth: 1,
     borderColor: PlayNestColors.borderLight,
@@ -359,7 +355,7 @@ const styles = StyleSheet.create({
   menuIconBox: {
     width: 44,
     height: 44,
-    borderRadius: 16,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 14,
