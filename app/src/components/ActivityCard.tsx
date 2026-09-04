@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
-import { StyleSheet, Text, View, Pressable, Animated } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Animated, ImageBackground } from 'react-native';
 import { Activity } from '@/types';
 import { PlayNestColors, Shadows } from '@/constants/playNestTheme';
-import { Heart, Clock, Users, Flame, ChevronRight, Zap } from 'lucide-react-native';
+import { Heart, Clock, Users, Flame, ChevronRight, Zap, ArrowRight } from 'lucide-react-native';
 
 interface ActivityCardProps {
   activity: Activity;
-  variant?: 'featured' | 'list';
+  variant?: 'featured' | 'list' | 'grid';
   isFavorite?: boolean;
   onToggleFavorite?: (id: string) => void;
   onPress: () => void;
@@ -155,6 +155,34 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
                 <Text style={styles.bookBtnText}>Book Session</Text>
                 <ChevronRight size={16} color="#FFFFFF" />
               </Pressable>
+            </View>
+          </View>
+        </Pressable>
+      </Animated.View>
+    );
+  }
+
+  // Grid Variant
+  if (variant === 'grid') {
+    return (
+      <Animated.View style={[{ transform: [{ scale: scaleAnim }] }, styles.gridWrapper]}>
+        <Pressable
+          onPress={onPress}
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
+          style={styles.gridContainer}>
+          <ImageBackground source={activity.image} style={styles.gridImage} resizeMode="cover" />
+          <View style={styles.gridContent}>
+            <Text style={styles.gridTitle} numberOfLines={1}>{activity.name}</Text>
+            <Text style={styles.gridDesc} numberOfLines={2}>{activity.description}</Text>
+            <View style={styles.gridFooter}>
+              <View style={styles.gridMetaItem}>
+                <Clock size={12} color="#A9A8D6" style={{ marginRight: 4, flexShrink: 0 }} />
+                <Text style={styles.gridMetaText} numberOfLines={1}>{activity.ageRange} • {activity.duration}</Text>
+              </View>
+              <View style={styles.gridActionBtn}>
+                <ArrowRight size={14} color="#FFFFFF" />
+              </View>
             </View>
           </View>
         </Pressable>
@@ -453,5 +481,63 @@ const styles = StyleSheet.create({
   },
   listHeartBtn: {
     padding: 6,
+  },
+  
+  // Grid Variant
+  gridWrapper: {
+    width: '47%',
+    marginBottom: 16,
+  },
+  gridContainer: {
+    backgroundColor: '#151843',
+    borderRadius: 16,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)',
+  },
+  gridImage: {
+    height: 90,
+    width: '100%',
+  },
+  gridContent: {
+    padding: 12,
+  },
+  gridTitle: {
+    fontFamily: 'NunitoBold',
+    fontSize: 14,
+    color: '#FFFFFF',
+    marginBottom: 4,
+  },
+  gridDesc: {
+    fontFamily: 'NunitoBold',
+    fontSize: 11,
+    color: '#A9A8D6',
+    lineHeight: 14,
+    marginBottom: 12,
+  },
+  gridFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  gridMetaItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    marginRight: 8,
+  },
+  gridMetaText: {
+    fontFamily: 'NunitoBold',
+    fontSize: 9,
+    color: '#A9A8D6',
+    flexShrink: 1,
+  },
+  gridActionBtn: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#8B5CF6',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -11,18 +11,23 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { usePlayNest } from '@/context/PlayNestContext';
 import { ActivityCategory } from '@/types';
-import { PlayNestColors } from '@/constants/playNestTheme';
 import { ActivityCard } from '@/components/ActivityCard';
-import { Search, X } from 'lucide-react-native';
+import { Search } from 'lucide-react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
-const CATEGORIES: { id: ActivityCategory; label: string; emoji: string }[] = [
-  { id: 'all', label: 'All Fun', emoji: '🌈' },
-  { id: 'gymnastics', label: 'Gymnastics', emoji: '🤸‍♀️' },
-  { id: 'ninja', label: 'Ninja', emoji: '🥷' },
-  { id: 'toddlers', label: 'Toddlers', emoji: '🧸' },
-  { id: 'dance', label: 'Dance', emoji: '💃' },
-  { id: 'sports', label: 'Sports', emoji: '🚀' },
-  { id: 'indoor_play', label: 'Indoor Play', emoji: '🏰' },
+const gymnasticsArtwork = require('../../../assets/images/activity-gymnastics.png');
+const playZoneArtwork = require('../../../assets/images/activity-play-zone.png');
+const ninjaArtwork = require('../../../assets/images/activity-ninja-kids.png');
+const danceArtwork = require('../../../assets/images/activity-dance.png');
+
+const CATEGORIES: { id: ActivityCategory; label: string }[] = [
+  { id: 'all', label: 'All' },
+  { id: 'gymnastics', label: 'Gymnastics' },
+  { id: 'indoor_play', label: 'Play' },
+  { id: 'ninja', label: 'Ninja' },
+  { id: 'dance', label: 'Dance' },
+  { id: 'sports', label: 'Sports' },
+  { id: 'toddlers', label: 'Toddlers' },
 ];
 
 export default function ActivitiesScreen() {
@@ -32,14 +37,18 @@ export default function ActivitiesScreen() {
   const [selectedCategory, setSelectedCategory] = useState<ActivityCategory>('all');
 
   const filteredActivities = useMemo(() => {
-    return activities.filter((act) => {
-      const matchesCategory =
-        selectedCategory === 'all' || act.category === selectedCategory;
-      const matchesSearch =
-        act.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        act.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        act.categoryLabel.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        act.ageRange.toLowerCase().includes(searchQuery.toLowerCase());
+    return activities.map(act => {
+      // Inject images since mock data doesn't have them
+      let image = playZoneArtwork;
+      if (act.category === 'gymnastics') image = gymnasticsArtwork;
+      else if (act.category === 'ninja') image = ninjaArtwork;
+      else if (act.category === 'dance') image = danceArtwork;
+      else if (act.category === 'sports') image = gymnasticsArtwork; // reuse
+      else if (act.category === 'toddlers') image = playZoneArtwork; // reuse
+      return { ...act, image };
+    }).filter((act) => {
+      const matchesCategory = selectedCategory === 'all' || act.category === selectedCategory;
+      const matchesSearch = act.name.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
   }, [activities, selectedCategory, searchQuery]);
@@ -47,99 +56,55 @@ export default function ActivitiesScreen() {
   return (
     <SafeAreaView edges={['top']} style={styles.safeArea}>
       <View style={styles.header}>
-        <View>
-          <Text style={styles.headerSub}>DISCOVER & LEARN</Text>
-          <Text style={styles.headerTitle}>Classes & Play 🤸</Text>
-        </View>
-        <View style={styles.countBadge}>
-          <Text style={styles.countText}>{filteredActivities.length} available</Text>
-        </View>
+        <Text style={styles.headerTitle}>Activities</Text>
+        <Text style={styles.headerSub}>Discover the perfect activity for your child.</Text>
       </View>
 
-      {/* Search Bar */}
       <View style={styles.searchContainer}>
-        <Search size={18} color={PlayNestColors.textMuted} style={styles.searchIcon} />
+        <Search size={18} color="#A9A8D6" style={styles.searchIcon} />
         <TextInput
-          placeholder="Search gymnastics, ninja, toddler..."
-          placeholderTextColor={PlayNestColors.textMuted}
+          placeholder="Search activities..."
+          placeholderTextColor="#A9A8D6"
           value={searchQuery}
           onChangeText={setSearchQuery}
           style={styles.searchInput}
         />
-        {searchQuery.length > 0 && (
-          <Pressable onPress={() => setSearchQuery('')} hitSlop={8} style={styles.clearBtn}>
-            <X size={16} color={PlayNestColors.textSecondary} />
-          </Pressable>
-        )}
       </View>
 
-      {/* Horizontal Category Filter Pills */}
       <View style={styles.filterRow}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoryPillsScroll}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoryPillsScroll}>
           {CATEGORIES.map((cat) => {
             const isSelected = selectedCategory === cat.id;
             return (
-              <Pressable
-                key={cat.id}
-                onPress={() => setSelectedCategory(cat.id)}
-                style={[
-                  styles.categoryPill,
-                  isSelected && styles.categoryPillSelected,
-                ]}>
-                <Text style={styles.pillEmoji}>{cat.emoji}</Text>
-                <Text
-                  style={[
-                    styles.pillLabel,
-                    isSelected && styles.pillLabelSelected,
-                  ]}>
-                  {cat.label}
-                </Text>
+              <Pressable key={cat.id} onPress={() => setSelectedCategory(cat.id)}>
+                {isSelected ? (
+                  <LinearGradient colors={['#A78BFA', '#E879F9']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.categoryPillSelected}>
+                    <Text style={[styles.pillLabel, styles.pillLabelSelected]}>{cat.label}</Text>
+                  </LinearGradient>
+                ) : (
+                  <View style={styles.categoryPill}>
+                    <Text style={styles.pillLabel}>{cat.label}</Text>
+                  </View>
+                )}
               </Pressable>
             );
           })}
         </ScrollView>
       </View>
 
-      {/* Activity Cards List */}
-      <ScrollView
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}>
-        {filteredActivities.length === 0 ? (
-          <View style={styles.emptyState}>
-            <Text style={styles.emptyEmoji}>🔍</Text>
-            <Text style={styles.emptyTitle}>No activities found</Text>
-            <Text style={styles.emptySubtitle}>
-              Try searching with another keyword or pick "All Fun" to see all sessions!
-            </Text>
-            <Pressable
-              onPress={() => {
-                setSearchQuery('');
-                setSelectedCategory('all');
-              }}
-              style={styles.resetBtn}>
-              <Text style={styles.resetBtnText}>Clear Filters</Text>
-            </Pressable>
-          </View>
-        ) : (
-          filteredActivities.map((act) => (
+      <ScrollView contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}>
+        <View style={styles.gridRow}>
+          {filteredActivities.map((act) => (
             <ActivityCard
               key={act.id}
               activity={act}
-              variant="list"
+              variant="grid"
               isFavorite={isFavorite(act.id)}
               onToggleFavorite={toggleFavorite}
-              onPress={() =>
-                router.push({
-                  pathname: '/activities/[id]',
-                  params: { id: act.id },
-                })
-              }
+              onPress={() => router.push({ pathname: '/activities/[id]', params: { id: act.id } })}
             />
-          ))
-        )}
+          ))}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -148,51 +113,33 @@ export default function ActivitiesScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: PlayNestColors.canvas,
+    backgroundColor: '#090B2A',
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 14,
-  },
-  headerSub: {
-    fontSize: 10,
-    fontWeight: '800',
-    color: PlayNestColors.primary,
-    letterSpacing: 1.2,
-    marginBottom: 4,
+    paddingHorizontal: 15,
+    paddingTop: 24,
+    paddingBottom: 16,
   },
   headerTitle: {
-    fontSize: 26,
-    fontWeight: '900',
-    color: PlayNestColors.text,
-    letterSpacing: -0.4,
+    fontFamily: 'NunitoBold',
+    fontSize: 28,
+    color: '#FFFFFF',
+    marginBottom: 4,
   },
-  countBadge: {
-    backgroundColor: PlayNestColors.primaryMuted,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 14,
-  },
-  countText: {
-    fontSize: 12,
-    fontWeight: '800',
-    color: PlayNestColors.primary,
+  headerSub: {
+    fontFamily: 'NunitoBold',
+    fontSize: 14,
+    color: '#A9A8D6',
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: PlayNestColors.card,
-    marginHorizontal: 20,
-    paddingHorizontal: 14,
-    height: 48,
+    backgroundColor: '#151843',
+    marginHorizontal: 15,
+    paddingHorizontal: 16,
+    height: 44,
     borderRadius: 22,
-    borderWidth: 1,
-    borderColor: PlayNestColors.borderLight,
-    marginBottom: 12,
+    marginBottom: 20,
   },
   searchIcon: {
     marginRight: 10,
@@ -200,81 +147,42 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 14,
-    fontWeight: '600',
-    color: PlayNestColors.text,
-  },
-  clearBtn: {
-    padding: 4,
+    fontFamily: 'NunitoBold',
+    color: '#FFFFFF',
   },
   filterRow: {
-    marginBottom: 14,
+    marginBottom: 20,
   },
   categoryPillsScroll: {
-    paddingHorizontal: 20,
-    gap: 8,
+    paddingHorizontal: 15,
+    gap: 12,
   },
   categoryPill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: PlayNestColors.card,
+    backgroundColor: '#151843',
     paddingVertical: 8,
-    paddingHorizontal: 14,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: PlayNestColors.borderLight,
+    paddingHorizontal: 16,
+    borderRadius: 20,
   },
   categoryPillSelected: {
-    backgroundColor: PlayNestColors.primaryDark,
-    borderColor: PlayNestColors.primaryDark,
-  },
-  pillEmoji: {
-    fontSize: 16,
-    marginRight: 6,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
   },
   pillLabel: {
     fontSize: 13,
-    fontWeight: '700',
-    color: PlayNestColors.textSecondary,
+    fontFamily: 'NunitoBold',
+    color: '#A9A8D6',
   },
   pillLabelSelected: {
     color: '#FFFFFF',
   },
   listContent: {
-    paddingHorizontal: 20,
-    paddingBottom: 30,
+    paddingHorizontal: 15,
+    paddingBottom: 120, // Space for floating bottom nav
   },
-  emptyState: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 60,
-    paddingHorizontal: 30,
-  },
-  emptyEmoji: {
-    fontSize: 50,
-    marginBottom: 12,
-  },
-  emptyTitle: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: PlayNestColors.text,
-    marginBottom: 6,
-  },
-  emptySubtitle: {
-    fontSize: 13,
-    color: PlayNestColors.textSecondary,
-    textAlign: 'center',
-    lineHeight: 18,
-    marginBottom: 16,
-  },
-  resetBtn: {
-    backgroundColor: PlayNestColors.primaryDark,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-  },
-  resetBtnText: {
-    color: '#FFFFFF',
-    fontSize: 13,
-    fontWeight: '800',
+  gridRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
 });

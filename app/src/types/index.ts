@@ -29,6 +29,7 @@ export interface Activity {
   badgeColor: string;
   badgeBg: string;
   emoji: string;
+  image?: any;
   accentColor: string;
   price: string;
   description: string;
